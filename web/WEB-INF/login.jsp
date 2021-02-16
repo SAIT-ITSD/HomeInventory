@@ -15,10 +15,10 @@
         <h1>Home Inventory</h1>
         <h2>Login</h2>
         <form action="" method="post">
-            <h3>User Name:<input type="text" name="username" value="${username}"></h3><br>
-            <h3>Password: <input type="text" name="password" value="${password}"></h3><br>
+            <h3>User Name:<input type="text" name="username" value="${username}"></h3>
+            <h3>Password: <input type="text" name="password" value="${password}"></h3>
             <input type="submit" name="submit" value="Submit">
         </form>
-            <br><h3>${message}</h3>
+            <h3>${message}</h3>
     </body>
 </html>
