@@ -9,9 +9,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Admin</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Home Inventory</h1><br>
+        <h2>Admin Summary</h2><br>
+        <h3>Total value for all users: ${total}. Most expensive item is ${productName} owned by ${userOfExpense}</h3>
+        <a href="login">Logout</a>
     </body>
 </html>
