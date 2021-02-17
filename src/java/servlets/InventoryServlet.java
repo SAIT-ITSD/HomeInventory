@@ -15,29 +15,39 @@ public class InventoryServlet extends HttpServlet {
 
    
     
-    @Override
+     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String logout=request.getParameter("logout");
         HttpSession session = request.getSession();
-        
-        if(logout!=null)
+        String username=(String)session.getAttribute("username");
+        if(logout==null)
         {
-            session.invalidate();
+             
+             if(username ==null)
+             {
+                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                .forward(request,response);
+             }
+             else if(username.equals("admin"))
+             {
+                 getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                .forward(request,response);
+             }
+             else
+             {
+             getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                .forward(request,response);
+             }
+        }
+        else
+        {
+           session.invalidate();
             request.setAttribute("message", "you have succesfully logged out.");
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
         }
-        else if(session.getAttribute("username").equals("admin"))
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
-        }
-        else
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                .forward(request,response);
-        }
+          
     }
 
     @Override
@@ -46,31 +56,50 @@ public class InventoryServlet extends HttpServlet {
         
          request.setAttribute("message","");  
          HttpSession session = request.getSession();
-         Scanner scannerUsers = new Scanner(new File("/WEB-INF/users.txt"));
+         
          ArrayList<String> Users = new ArrayList<String>();
          boolean isTrue=false;
          String price=request.getParameter("price");
-         String username=request.getParameter("username");
-         String password=request.getParameter("password");
+        String username=request.getParameter("username");
+           String password=request.getParameter("password");
+         String path=getServletContext().getRealPath("/WEB-INF/users.txt");
+         Scanner scannerUsers = new Scanner(new File(path));
+         
          while(scannerUsers.hasNext())
          {
              Users.add(scannerUsers.next());
          }
          scannerUsers.close();
-         for(String user:Users)
+         if(session.getAttribute("username")==null)
          {
-             String[] theUser=user.split(",");
-           
-             if(username.equals(theUser[0])&& password.equals(theUser[1]))
-             {
-                 isTrue=true;
-                
-             }
-            
+            for(String user:Users)
+            {
+                String[] theUser=user.split(",");
+
+                if(username.equals(theUser[0])&& password.equals(theUser[1]))
+                {
+                    isTrue=true;
+                   session.setAttribute("username", theUser[0]);
+                   session.setAttribute("password", theUser[1]);
+                }
+
+            }
+             if(session.getAttribute("username").equals("admin"))
+            {
+                getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                   .forward(request,response);
+                return;
+            }
+         }
+        
+         else
+         {
+            isTrue=true;
          }
          if(isTrue==true)
          {
-            Scanner scannerHomeItems = new Scanner(new File("/WEB-INF/homeitems.txt"));
+            String path2=getServletContext().getRealPath("/WEB-INF/homeitems.txt");
+            Scanner scannerHomeItems = new Scanner(new File(path2));
             isTrue=false;
             int v_price=0;
              try {  

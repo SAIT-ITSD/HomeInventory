@@ -24,22 +24,31 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String logout=request.getParameter("logout");
         HttpSession session = request.getSession();
-        
-        if(logout!=null)
+        String username=(String)session.getAttribute("username");
+        if(logout==null)
         {
-            session.invalidate();
-            request.setAttribute("message", "you have succesfully logged out.");
-            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+             
+             if(username ==null)
+             {
+                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
-        }
-        else if(session.getAttribute("username").equals("admin"))
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+             }
+             else if(username.equals("admin"))
+             {
+                 getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
+             }
+             else
+             {
+             getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                .forward(request,response);
+             }
         }
         else
         {
-            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+           session.invalidate();
+            request.setAttribute("message", "you have succesfully logged out.");
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
         }
           

@@ -17,29 +17,39 @@ public class AdminServlet extends HttpServlet {
 
    
     
-    @Override
+      @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         String logout=request.getParameter("logout");
+        String logout=request.getParameter("logout");
         HttpSession session = request.getSession();
-        
-        if(logout!=null)
+        String username=(String)session.getAttribute("username");
+        if(logout==null)
         {
-            session.invalidate();
+             
+             if(username ==null)
+             {
+                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                .forward(request,response);
+             }
+             else if(username.equals("admin"))
+             {
+                 getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                .forward(request,response);
+             }
+             else
+             {
+             getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                .forward(request,response);
+             }
+        }
+        else
+        {
+           session.invalidate();
             request.setAttribute("message", "you have succesfully logged out.");
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
         }
-        else if(session.getAttribute("username").equals("admin"))
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
-        }
-        else
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                .forward(request,response);
-        }
+          
     }
 
     
