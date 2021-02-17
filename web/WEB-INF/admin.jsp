@@ -14,7 +14,7 @@
     <body>
         <h1>Home Inventory</h1><br>
         <h2>Admin Summary</h2><br>
-        <h3>Total value for all users: ${total}. Most expensive item is ${productName} owned by ${userOfExpense}</h3>
-        <a href="login">Logout</a>
+        <h3>Total value for all users: ${total}. Most expensive item is ${session.productName} owned by ${userOfExpense}</h3>
+        <a href="login?logout">Logout</a>
     </body>
 </html>
