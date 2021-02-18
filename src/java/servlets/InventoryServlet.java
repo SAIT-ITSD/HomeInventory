@@ -22,12 +22,12 @@ public class InventoryServlet extends HttpServlet {
             throws ServletException, IOException {
         String logout=request.getParameter("logout");
         HttpSession session = request.getSession();
-         String username=request.getParameter("username");
-         String password=request.getParameter("password");
+        String username=(String)session.getAttribute("username");
+        String password=(String)session.getAttribute("password");
         if(logout==null)
         {
              
-             if(session.getAttribute("username") ==null)
+             if(username ==null)
              {
                  request.setAttribute("message","");
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
@@ -61,72 +61,33 @@ public class InventoryServlet extends HttpServlet {
          boolean isTrue=false;
          String name=request.getParameter("Item_name");
          String price=request.getParameter("price");
-         if(request.getParameter("username")!=null)
-         { 
-             session.setAttribute("username",request.getParameter("username"));
-             session.setAttribute("password",request.getParameter("password"));
-         }
-         
-        
          String username=(String)session.getAttribute("username");
-         String password=(String)session.getAttribute("password");
-         String path=getServletContext().getRealPath("/WEB-INF/users.txt");
-        
-         Scanner scannerUsers = new Scanner(new File(path));
-         while(scannerUsers.hasNext())
-         {
-            String[] user=scannerUsers.next().split(",");
-          
-            if(username.equals(user[0])&&password.equals(user[1]))
-            {
-                
-                isTrue=true;
-            }
-         }
-         scannerUsers.close();
-         if(isTrue==false)
-         {
-               session.setAttribute("username",null);
-             request.setAttribute("message","invalid login!");
-             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
-             return;
-            
-         }
-         if(username.equals("admin"))
-         {
-             
-             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
-             return;
-         }
-         if(isTrue==true)
-         {
-            
-            try{ 
-                if((parseInt(price) < 0)||(parseInt(price) > 10000)||(parseInt(price)==0))
-                {
-                    request.setAttribute("message","invalid, please re-enter");
-                    getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                    .forward(request,response);
-                    return;
-                }
-                else
-                {
-                    request.setAttribute("message","success");
-                    getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                    .forward(request,response);
-                    return;
-                }
-               }
-            catch(NumberFormatException e)
+    
+
+        try{ 
+            if((parseInt(price) < 0)||(parseInt(price) > 10000)||(parseInt(price)==0)||(name.equals("")))
             {
                 request.setAttribute("message","invalid, please re-enter");
                 getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
                 return;
             }
-            
-         }
+            else
+            {
+                request.setAttribute("message","success");
+                getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                .forward(request,response);
+                return;
+            }
+           }
+        catch(NumberFormatException e)
+        {
+            request.setAttribute("message","invalid, please re-enter");
+            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+            .forward(request,response);
+            return;
+        }
+
+         
     }
 }

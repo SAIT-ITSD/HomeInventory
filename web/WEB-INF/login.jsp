@@ -14,7 +14,7 @@
     <body>
         <h1>Home Inventory</h1>
         <h2>Login</h2>
-        <form action="inventory" method="post">
+        <form action="login" method="post">
             <h3>User Name:<input type="text" name="username" value="${session.username}"></h3>
             <h3>Password: <input type="text" name="password" value="${session.password}"></h3>
             <input type="submit" name="submit" value="Submit">
