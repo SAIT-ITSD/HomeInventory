@@ -3,7 +3,9 @@ package servlets;
 
 import java.io.File;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,22 +22,20 @@ public class InventoryServlet extends HttpServlet {
             throws ServletException, IOException {
         String logout=request.getParameter("logout");
         HttpSession session = request.getSession();
-        String username=(String)session.getAttribute("username");
+         String username=request.getParameter("username");
+         String password=request.getParameter("password");
         if(logout==null)
         {
              
-             if(username ==null)
+             if(session.getAttribute("username") ==null)
              {
+                 request.setAttribute("message","");
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
-             }
-             else if(username.equals("admin"))
-             {
-                 getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
              }
              else
              {
+                 request.setAttribute("message","");
              getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
              }
@@ -59,86 +59,74 @@ public class InventoryServlet extends HttpServlet {
          
          ArrayList<String> Users = new ArrayList<String>();
          boolean isTrue=false;
+         String name=request.getParameter("Item_name");
          String price=request.getParameter("price");
-        String username=request.getParameter("username");
-           String password=request.getParameter("password");
-         String path=getServletContext().getRealPath("/WEB-INF/users.txt");
-         Scanner scannerUsers = new Scanner(new File(path));
+         if(request.getParameter("username")!=null)
+         { 
+             session.setAttribute("username",request.getParameter("username"));
+             session.setAttribute("password",request.getParameter("password"));
+         }
          
+        
+         String username=(String)session.getAttribute("username");
+         String password=(String)session.getAttribute("password");
+         String path=getServletContext().getRealPath("/WEB-INF/users.txt");
+        
+         Scanner scannerUsers = new Scanner(new File(path));
          while(scannerUsers.hasNext())
          {
-             Users.add(scannerUsers.next());
+            String[] user=scannerUsers.next().split(",");
+          
+            if(username.equals(user[0])&&password.equals(user[1]))
+            {
+                
+                isTrue=true;
+            }
          }
          scannerUsers.close();
-         if(session.getAttribute("username")==null)
+         if(isTrue==false)
          {
-            for(String user:Users)
-            {
-                String[] theUser=user.split(",");
-
-                if(username.equals(theUser[0])&& password.equals(theUser[1]))
-                {
-                    isTrue=true;
-                   session.setAttribute("username", theUser[0]);
-                   session.setAttribute("password", theUser[1]);
-                }
-
-            }
-             if(session.getAttribute("username").equals("admin"))
-            {
-                getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                   .forward(request,response);
-                return;
-            }
+               session.setAttribute("username",null);
+             request.setAttribute("message","invalid login!");
+             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                .forward(request,response);
+             return;
+            
          }
-        
-         else
+         if(username.equals("admin"))
          {
-            isTrue=true;
+             
+             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                .forward(request,response);
+             return;
          }
          if(isTrue==true)
          {
-            String path2=getServletContext().getRealPath("/WEB-INF/homeitems.txt");
-            Scanner scannerHomeItems = new Scanner(new File(path2));
-            isTrue=false;
-            int v_price=0;
-             try {  
-                     v_price=Integer.parseInt(price);
-                     if(v_price <0 &&v_price!=0)
-                     {
-                         isTrue=true;
-                     }
-                     else
-                     {
-                         isTrue=false;
-                     }
-                   } 
-             catch(NumberFormatException e){  
-                     isTrue= false;  
-                   }  
-            if(isTrue==false)
+            
+            try{ 
+                if((parseInt(price) < 0)||(parseInt(price) > 10000)||(parseInt(price)==0))
+                {
+                    request.setAttribute("message","invalid, please re-enter");
+                    getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                    .forward(request,response);
+                    return;
+                }
+                else
+                {
+                    request.setAttribute("message","success");
+                    getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                    .forward(request,response);
+                    return;
+                }
+               }
+            catch(NumberFormatException e)
             {
-                request.setAttribute("message","Invalid.Please re-nter.");  
-                  scannerHomeItems.close();
-                 getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                request.setAttribute("message","invalid, please re-enter");
+                getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
-                 return;
+                return;
             }
-            scannerHomeItems.close();
-
-            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-           .forward(request,response);
-            return;
+            
          }
-        else
-          { 
-              request.setAttribute("message","Invalid Login.");
-              getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-             .forward(request,response);
-              return;
-          }
-         
     }
-
-
 }

@@ -28,12 +28,12 @@ public class LoginServlet extends HttpServlet {
         if(logout==null)
         {
              
-             if(username ==null)
+             if(session.getAttribute("username") ==null)
              {
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
              }
-             else if(username.equals("admin"))
+             else if(session.getAttribute("username").equals("admin"))
              {
                  getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);

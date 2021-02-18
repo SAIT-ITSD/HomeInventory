@@ -26,18 +26,21 @@ public class AdminServlet extends HttpServlet {
         if(logout==null)
         {
              
-             if(username ==null)
+             if(session.getAttribute("username") ==null)
              {
+                   request.setAttribute("message", "");
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
              }
-             else if(username.equals("admin"))
+             if(session.getAttribute("username").equals("admin"))
              {
+                   request.setAttribute("message", "");
                  getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
              }
              else
              {
+                  request.setAttribute("message", "");
              getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
              }
