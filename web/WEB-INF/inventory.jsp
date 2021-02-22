@@ -12,7 +12,7 @@
         <title>Inventory</title>
     </head>
     <body>
-        <h1>Home Inventory for ${session.username}</h1><br>
+        <h1>Home Inventory for ${name}</h1><br>
         <h2>add item</h2>
         <br><br>
         <form action="inventory" method="post">
@@ -28,7 +28,7 @@
         <input type="submit" value="Add">
         </form>
         <h3>${message}</h3><br>
-        <h3>Total value in inventory: $ ${session.inventory}.</h3><br>
+        <h3>${utotal}</h3><br>
         <a href="login?logout">Logout</a>
     </body>
 </html>

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.HomeItem;
 
 /**
  *
@@ -28,6 +29,8 @@ public class LoginServlet extends HttpServlet {
         String logout=request.getParameter("logout");
         HttpSession session = request.getSession();
         String username=(String)session.getAttribute("username");
+        HomeItem hi=new HomeItem();
+        
         if(logout==null)
         {
              
@@ -38,11 +41,16 @@ public class LoginServlet extends HttpServlet {
              }
              else if(session.getAttribute("username").equals("admin"))
              {
+                 request.setAttribute("total", hi.total(getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
                  getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
              }
              else
              {
+                 request.setAttribute("utotal", hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt"))); 
+                  String uname=(String)session.getAttribute("username");
+                   request.setAttribute("name",uname);
+                   
              getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
              }
@@ -64,7 +72,7 @@ public class LoginServlet extends HttpServlet {
         
          request.setAttribute("message","");  
          HttpSession session = request.getSession();
-         
+         HomeItem hi=new HomeItem();
          ArrayList<String> Users = new ArrayList<String>();
          boolean isTrue=false;
          
@@ -88,6 +96,8 @@ public class LoginServlet extends HttpServlet {
             {
                 
                 isTrue=true;
+                session.setAttribute("username",user[0]);
+                session.setAttribute("password",user[1]);
             }
          }
          scannerUsers.close();
@@ -102,15 +112,19 @@ public class LoginServlet extends HttpServlet {
          }
          if(username.equals("admin"))
          {
-             
+             String[] key=hi.topUser(getServletContext().getRealPath("/WEB-INF/homeitems.txt")).split(",");
+             request.setAttribute("productName", key[1]);
+             request.setAttribute("userOfExpense",key[0]);
+             request.setAttribute("total", hi.total(getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
+            request.setAttribute("name", username);
              getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
              return;
          }
          if(isTrue==true)
          {
-            
-           
+           request.setAttribute("utotal", hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt"))); 
+           request.setAttribute("username",username);
              request.setAttribute("message","");
              getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
              .forward(request,response);

@@ -5,13 +5,16 @@
  */
 package servlets;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Scanner;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.HomeItem;
 
 public class AdminServlet extends HttpServlet {
 
@@ -23,6 +26,8 @@ public class AdminServlet extends HttpServlet {
         String logout=request.getParameter("logout");
         HttpSession session = request.getSession();
         String username=(String)session.getAttribute("username");
+        HomeItem hi=new HomeItem();
+         
         if(logout==null)
         {
              
@@ -34,12 +39,16 @@ public class AdminServlet extends HttpServlet {
              }
              if(session.getAttribute("username").equals("admin"))
              {
-                   request.setAttribute("message", "");
+                 request.setAttribute("total", hi.total(getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
+                request.setAttribute("message", "");
                  getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
              }
              else
              {
+                 request.setAttribute("utotal", hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt"))); 
+                   String uname=(String)session.getAttribute("username");
+                    request.setAttribute("name",uname);
                   request.setAttribute("message", "");
              getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
