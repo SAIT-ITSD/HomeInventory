@@ -39,6 +39,9 @@ public class AdminServlet extends HttpServlet {
              }
              if(session.getAttribute("username").equals("admin"))
              {
+                  String[] key=hi.topUser(getServletContext().getRealPath("/WEB-INF/homeitems.txt")).split(",");
+             request.setAttribute("productName", key[1]);
+             request.setAttribute("userOfExpense",key[0]);
                  request.setAttribute("total", hi.total(getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
                 request.setAttribute("message", "");
                  getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")

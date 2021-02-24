@@ -25,9 +25,12 @@ public class InventoryServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username=(String)session.getAttribute("username");
         String password=(String)session.getAttribute("password");
-         HomeItem hi=new HomeItem();
+        HomeItem hi=new HomeItem();
+        String[] key=hi.topUser(getServletContext().getRealPath("/WEB-INF/homeitems.txt")).split(",");
+        request.setAttribute("productName", key[1]);
+        request.setAttribute("userOfExpense",key[0]);
+        String path=getServletContext().getRealPath("/WEB-INF/homeitems.txt");
          
-         String path=getServletContext().getRealPath("/WEB-INF/homeitems.txt");
         if(logout==null)
         {
              
@@ -39,6 +42,7 @@ public class InventoryServlet extends HttpServlet {
              }
              else if(username.equals("admin"))
              {
+               
                  request.setAttribute("total", hi.total(getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
                    request.setAttribute("message","");
                        getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
@@ -48,7 +52,7 @@ public class InventoryServlet extends HttpServlet {
              {
                 request.setAttribute("utotal", hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt"))); 
                   String uname=(String)session.getAttribute("username");
-          request.setAttribute("name",uname);
+                    request.setAttribute("name",uname);
                   request.setAttribute("name",session.getAttribute("username"));
                  request.setAttribute("message","");
              getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
@@ -69,20 +73,24 @@ public class InventoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        
-         request.setAttribute("message","");  
-         HttpSession session = request.getSession();
-         String uname=(String)session.getAttribute("username");
-          request.setAttribute("name",uname);
-         ArrayList<String> Users = new ArrayList<String>();
-         boolean isTrue=false;
-         String name=request.getParameter("Item_name");
-         String price=request.getParameter("price");
-         String username=(String)session.getAttribute("username");
-             HomeItem hi=new HomeItem();
-         String path=getServletContext().getRealPath("/WEB-INF/homeitems.txt");
-         request.setAttribute("utotal", hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt"))); 
-         String category=request.getParameter("category");
-         String line=(String)session.getAttribute("username")+","+category+","+name+","+price;
+        request.setAttribute("message","");  
+        HttpSession session = request.getSession();
+        String uname=(String)session.getAttribute("username");
+        request.setAttribute("name",uname);
+        ArrayList<String> Users = new ArrayList<String>();
+        boolean isTrue=false;
+        String name=request.getParameter("Item_name");
+        String price=request.getParameter("price");
+        String username=(String)session.getAttribute("username");
+        HomeItem hi=new HomeItem();
+        String path=getServletContext().getRealPath("/WEB-INF/homeitems.txt"); 
+        String category=request.getParameter("category");
+        String line=(String)session.getAttribute("username")+","+category+","+name+","+price;
+        /*look back with teacher*/
+        String[] key=hi.topUser(getServletContext().getRealPath("/WEB-INF/homeitems.txt")).split(",");
+        request.setAttribute("productName", key[1]);
+        request.setAttribute("userOfExpense",key[0]);
+        request.setAttribute("utotal",hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
         try{ 
             if((parseInt(price) < 0)||(parseInt(price) > 10000)||(parseInt(price)==0)||(name.equals("")))
             {
@@ -90,16 +98,18 @@ public class InventoryServlet extends HttpServlet {
                 request.setAttribute("message","invalid, please re-enter");
                 getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
-                return;
+               return;
             }
             else
             {
                 hi.append(path, line);
-                request.setAttribute("message","success");
+                request.setAttribute("utotal",hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
                 getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
+                price="0";
                 return;
             }
+            
            }
         catch(NumberFormatException e)
         {

@@ -41,12 +41,16 @@ public class LoginServlet extends HttpServlet {
              }
              else if(session.getAttribute("username").equals("admin"))
              {
+                  String[] key=hi.topUser(getServletContext().getRealPath("/WEB-INF/homeitems.txt")).split(",");
+                request.setAttribute("productName", key[1]);
+                request.setAttribute("userOfExpense",key[0]);
                  request.setAttribute("total", hi.total(getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
                  getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
              }
              else
              {
+                 
                  request.setAttribute("utotal", hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt"))); 
                   String uname=(String)session.getAttribute("username");
                    request.setAttribute("name",uname);
@@ -123,6 +127,7 @@ public class LoginServlet extends HttpServlet {
          }
          if(isTrue==true)
          {
+             
            request.setAttribute("utotal", hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt"))); 
            request.setAttribute("username",username);
              request.setAttribute("message","");
