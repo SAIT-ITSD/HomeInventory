@@ -25,9 +25,9 @@
           </h3>
             <h3>Item Name: <input type="text" name="Item_name"></h3>
         <h3>Price: <input type="text" name="price"></h3><br>
-        <input type="submit" value="Add">
+        <input type="submit" value="Add"> <h3>${message}</h3>
         </form>
-        <h3>${message}</h3><br>
+       
         <h3>${utotal}</h3><br>
         <a href="login?logout">Logout</a>
     </body>

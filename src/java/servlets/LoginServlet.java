@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username=(String)session.getAttribute("username");
         HomeItem hi=new HomeItem();
-        
+        request.setAttribute("name",username);
         if(logout==null)
         {
              
@@ -51,9 +51,9 @@ public class LoginServlet extends HttpServlet {
              else
              {
                  
-                 request.setAttribute("utotal", hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt"))); 
-                  String uname=(String)session.getAttribute("username");
-                   request.setAttribute("name",uname);
+                  request.setAttribute("utotal","\n "+"Total value in inventory: $"+hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
+               
+           
                    
              getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
@@ -90,7 +90,7 @@ public class LoginServlet extends HttpServlet {
          String username=(String)session.getAttribute("username");
          String password=(String)session.getAttribute("password");
          String path=getServletContext().getRealPath("/WEB-INF/users.txt");
-        
+         request.setAttribute("name",username);
          Scanner scannerUsers = new Scanner(new File(path));
          while(scannerUsers.hasNext())
          {
@@ -128,7 +128,8 @@ public class LoginServlet extends HttpServlet {
          if(isTrue==true)
          {
              
-           request.setAttribute("utotal", hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt"))); 
+           request.setAttribute("utotal","\n "+"Total value in inventory: $"+hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
+                
            request.setAttribute("username",username);
              request.setAttribute("message","");
              getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")

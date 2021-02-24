@@ -27,7 +27,7 @@ public class AdminServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username=(String)session.getAttribute("username");
         HomeItem hi=new HomeItem();
-         
+          request.setAttribute("name",username);
         if(logout==null)
         {
              
@@ -49,7 +49,7 @@ public class AdminServlet extends HttpServlet {
              }
              else
              {
-                 request.setAttribute("utotal", hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt"))); 
+                  request.setAttribute("utotal","\n "+"Total value in inventory: $"+hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
                    String uname=(String)session.getAttribute("username");
                     request.setAttribute("name",uname);
                   request.setAttribute("message", "");
