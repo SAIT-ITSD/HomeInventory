@@ -42,7 +42,8 @@ public class InventoryServlet extends HttpServlet {
              }
              else if(username.equals("admin"))
              {
-               
+               String uname=(String)session.getAttribute("username");
+          request.setAttribute("name",uname);
                  request.setAttribute("total", hi.total(getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
                    request.setAttribute("message","");
                        getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
