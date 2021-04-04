@@ -12,23 +12,23 @@
         <title>Inventory</title>
     </head>
     <body>
-        <h1>Home Inventory for ${name}</h1><br>
-        <h2>add item</h2>
-        <br><br>
+        <h1>Home Inventory</h1><br>
+        <h3><b>menu</b></h3>
+        <ul>
+            <li><a href="inventory">inventory</a></li>
+            <li><a href="login">login</a></li>
+            <li><a href="admin">admin</a></li>
+        </ul>
+        <h2>Inventory for ${username}</h2>
+        <table name="users">
+            
+        </table>
+        <h3><b>Add item</b></h3>
         <form action="inventory" method="post">
-        <h3>Category <select name="category">
-            <option value="living room">living room</option>
-            <option value="bedroom">bedroom</option>
-            <option value="kitchen">kitchen</option>
-            <option value="garage">garage</option>
-          </select>
-          </h3>
-            <h3>Item Name: <input type="text" name="Item_name"></h3>
-        <h3>Price: <input type="text" name="price"></h3><br>
-        <input type="submit" value="Add"> <h3>${message}</h3>
+        <h3>Category: <select name="categorys"></h3>
+        <h3>Name: <input type="text" name="name"></h3>
+        <h3>Price: <input type="text" name="price"></h3>
+        <input type="submit" value="Save">
         </form>
-       
-        <h3>${utotal}</h3><br>
-        <a href="login?logout">Logout</a>
     </body>
 </html>

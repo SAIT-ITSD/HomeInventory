@@ -12,9 +12,25 @@
         <title>Admin</title>
     </head>
     <body>
-        <h1>Home Inventory</h1><br>
-        <h2>Admin Summary</h2><br>
-        <h3>Total value for all users $ ${total}. Most expensive item is ${productName} owned by ${userOfExpense}</h3>
-        <a href="login?logout">Logout</a>
+         <h1>Home Inventory</h1><br>
+        <h3><b>menu</b></h3>
+        <ul>
+            <li><a href="inventory">inventory</a></li>
+            <li><a href="login">login</a></li>
+            <li><a href="admin">admin</a></li>
+        </ul>
+        <h2>Manage Users</h2>
+        <table name="users">
+            
+        </table>
+        <h3><b>Add User</b></h3>
+        <form action="admin" method="post">
+        
+        <h3>Email: <input type="text" name="email"></h3>
+        <h3>First Name: <input type="text" name="firstName"></h3>
+        <h3>Last Name: <input type="text" name="lastName"></h3>
+        <h3>Password: <input type="text" name="password"></h3>
+        <input type="submit" value="Save">
+        </form>
     </body>
 </html>

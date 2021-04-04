@@ -20,59 +20,59 @@ public class AdminServlet extends HttpServlet {
 
    
     
-      @Override
+     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String logout=request.getParameter("logout");
-        HttpSession session = request.getSession();
-        String username=(String)session.getAttribute("username");
-        HomeItem hi=new HomeItem();
-          request.setAttribute("name",username);
-        if(logout==null)
+           HttpSession session = request.getSession();
+        String email=(String)session.getAttribute("email");
+        String password=(String)session.getAttribute("password");
+        if(email==null||password==null)
         {
-             
-             if(session.getAttribute("username") ==null)
-             {
-                   request.setAttribute("message", "");
-                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+           getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
-             }
-             if(session.getAttribute("username").equals("admin"))
-             {
-                  String[] key=hi.topUser(getServletContext().getRealPath("/WEB-INF/homeitems.txt")).split(",");
-             request.setAttribute("productName", key[1]);
-             request.setAttribute("userOfExpense",key[0]);
-                 request.setAttribute("total", hi.total(getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
-                request.setAttribute("message", "");
-                 getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+           return;
+        }
+        else if(email.contains("admin"))
+        {
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
-             }
-             else
-             {
-                  request.setAttribute("utotal","\n "+"Total value in inventory: $"+hi.total(username,getServletContext().getRealPath("/WEB-INF/homeitems.txt")));
-                   String uname=(String)session.getAttribute("username");
-                    request.setAttribute("name",uname);
-                  request.setAttribute("message", "");
-             getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                .forward(request,response);
-             }
+           return;
         }
         else
         {
-           session.invalidate();
-            request.setAttribute("message", "you have succesfully logged out.");
-            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
+           return;
         }
           
     }
 
-    
+ 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+            HttpSession session = request.getSession();
+        String email=(String)session.getAttribute("email");
+        String password=(String)session.getAttribute("password");
+        if(email==null||password==null)
+        {
+           getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                .forward(request,response);
+           return;
+        }
+        else if(email.contains("admin"))
+        {
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                .forward(request,response);
+           return;
+        }
+        else
+        {
+            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                .forward(request,response);
+           return;
+        }
     }
-
 
 }
