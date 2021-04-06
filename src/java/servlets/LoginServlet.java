@@ -31,27 +31,11 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession();
-        String email=(String)session.getAttribute("email");
-        String password=(String)session.getAttribute("password");
-        if(email==null||password==null)
-        {
+        
            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
            return;
-        }
-        else if(email.contains("admin"))
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
-           return;
-        }
-        else
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                .forward(request,response);
-           return;
-        }
+     
           
     }
 
@@ -62,6 +46,7 @@ public class LoginServlet extends HttpServlet {
         
             HttpSession session = request.getSession();
         String email=(String)request.getParameter("email");
+        session.setAttribute("email",email);
         if(email!=null)
         {
            UserDB udb=new UserDB();
@@ -71,7 +56,7 @@ public class LoginServlet extends HttpServlet {
                     if(user!=null&&user.getPassword().equals(password))
                     {
                         
-                        session.setAttribute("email",email);
+                        
                         if(user.getRole()==1)
                         {
                             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
