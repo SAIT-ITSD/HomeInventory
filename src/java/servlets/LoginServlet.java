@@ -61,23 +61,18 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         
             HttpSession session = request.getSession();
-        String email=(String)session.getAttribute("email");
-        String password=(String)session.getAttribute("password");
-        if(email==null||password==null)
+        String email=(String)request.getParameter("email");
+        if(email!=null)
         {
            UserDB udb=new UserDB();
                 try {
                     User user=udb.get(email);
-                    password=request.getParameter("password");
-                    if(user.getEmail()!=null&&user.getPassword().equals(password))
+                    String password=request.getParameter("password");
+                    if(user!=null&&user.getPassword().equals(password))
                     {
-                        email=request.getParameter("email");
-                        password=request.getParameter("password");
+                        
                         session.setAttribute("email",email);
-                        session.setAttribute("password",password);
-                        email=(String)session.getAttribute("email");
-                        password=(String)session.getAttribute("password");
-                        if(email.contains("admin"))
+                        if(user.getRole()==1)
                         {
                             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                                 .forward(request,response);
@@ -94,18 +89,6 @@ public class LoginServlet extends HttpServlet {
                     Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
-           return;
-        }
-        else if(email.contains("admin"))
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
-           return;
-        }
-        else
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
            return;
         }
