@@ -12,29 +12,19 @@ import java.io.Serializable;
  * @author 828200
  */
 public class Item implements Serializable{
-     int itemId;
-     int category;
+    int category;
      String itemName;
      float price;
      String owner;
-     public Item()
-     {
-     }
 
-    public Item(int itemId, int category, String itemName, float price, String owner) {
-        this.itemId = itemId;
+    public Item() {
+    }
+
+    public Item(int category, String itemName, float price, String owner) {
         this.category = category;
         this.itemName = itemName;
         this.price = price;
         this.owner = owner;
-    }
-
-    public int getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
     }
 
     public int getCategory() {
@@ -68,5 +58,5 @@ public class Item implements Serializable{
     public void setOwner(String owner) {
         this.owner = owner;
     }
-     
+    
 }

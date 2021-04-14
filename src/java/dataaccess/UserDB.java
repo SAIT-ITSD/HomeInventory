@@ -119,7 +119,7 @@ public class UserDB {
         }
     }
 
-    public void delete(User user) throws Exception {
+  public void delete(User user) throws Exception {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;

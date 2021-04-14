@@ -19,6 +19,7 @@
             <h3>Password: <input type="text" name="password" value="${session.password}"></h3>
             <input type="submit" name="submit" value="Log in">
         </form>
+            <li><a href="newAccount">sighn up</a></li>
             <h3>${message}</h3>
     </body>
 </html>

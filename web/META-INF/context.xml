@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/Home Inventory">
+<Context path="/">
      <Resource name="jdbc/inventorydb" auth="Container" 
         driverClassName="com.mysql.jdbc.Driver"
         url="jdbc:mysql://localhost:3306/inventorydb" 
