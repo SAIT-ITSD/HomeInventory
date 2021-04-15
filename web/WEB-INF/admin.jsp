@@ -92,7 +92,7 @@
                   </tr>
             </c:forEach>
         </table>
-        <form method="admin" method="post">
+        <form action="admin" method="post">
                <input type="hidden"  name="method" value="addCategory">
                  <h3>category Id: <input type="text" name="newCategoryId" value="${newCategoryId}"></h3> 
         <h3>category Name: <input type="text" name="newCategoryName" value="${newCategoryName}"></h3> 

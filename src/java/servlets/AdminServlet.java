@@ -126,7 +126,8 @@ public class AdminServlet extends HttpServlet {
              request.setAttribute("updatedEmail",null);
              request.setAttribute("updatedPassword",null);
              request.setAttribute("updatedFirstName",null);
-             request.setAttribute("updatedLastName",null);users=udb.getAll();
+             request.setAttribute("updatedLastName",null);
+             users=udb.getAll();request.setAttribute("users",users);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
             
@@ -140,6 +141,7 @@ public class AdminServlet extends HttpServlet {
             {
                 udb.delete(thisUser);
             }
+            users=udb.getAll();request.setAttribute("users",users);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
            return;
@@ -172,28 +174,25 @@ public class AdminServlet extends HttpServlet {
         }
         else if(user.getRole()==1&&method.equals("addCategory"))
         {
-              int getId=(int)request.getAttribute("newCategoryId");
-              String getName=(String)request.getAttribute("newCategoryName");
+              int getId=Integer.parseInt(request.getParameter("newCategoryId"));
+              String getName=request.getParameter("newCategoryName");
               int tisID=-1;
-              int highest=0;
+              int highest=categorys.size()+1;
               for(int i=0;i<categorys.size();i++)
               {
                   if(categorys.get(i).getCategoryId()==getId)
                   {
                       tisID=i;
-                      if(highest<i)
-                      {
-                          highest=i;
-                      }
-                  }
+                     
+                  } 
               }
               if(tisID!=-1)
               {
-                  cdb.update(tisID, getName);
+                  cdb.update(tisID+1, getName);
               }
               else
               {
-                  cdb.insert((highest+1), getName);
+                  cdb.insert((highest), getName);
               }
         }
           else if(user==null)

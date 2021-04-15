@@ -146,6 +146,8 @@ public class InventoryServlet extends HttpServlet {
             
             getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                 .forward(request,response);
+               items=idb.getAll(email);
+        request.setAttribute("items",items);
            return;
         }
         
