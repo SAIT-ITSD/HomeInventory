@@ -101,10 +101,7 @@ public class InventoryServlet extends HttpServlet {
                 String oldItemName=(String)session.getAttribute("oldItemName");
                 if(oldItemName!=null)
                 {
-                     addName=request.getParameter("updatedName");
-                     addPrice=request.getParameter("updatedPrice");
-                     item.setItemName(addName);
-                     item.setPrice(Float.parseFloat(addPrice));
+                    
                     idb.update(item, oldItemName);
                 }
                 else

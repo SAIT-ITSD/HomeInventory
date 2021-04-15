@@ -97,11 +97,17 @@ public class ItemDB {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
-        String sql = "UPDATE  category=? item_name=? price=? owner=? WHERE item_name=? and owner=?";
+        String sql = "UPDATE item set  category=?,item_name=?,price=?,owner=? WHERE item_name=? and owner=?";
+      
+                
         
         try {
             ps = con.prepareStatement(sql);
-             
+              String a=item.getItemName();
+                String b=item.getOwner();
+                        
+                                        float e=item.getPrice();
+                                                int f= item.getCategory();
             ps.setInt(1, item.getCategory());
             ps.setString(2, item.getItemName());
             ps.setFloat(3, item.getPrice());
