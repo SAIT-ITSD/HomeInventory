@@ -98,6 +98,7 @@ public class InventoryServlet extends HttpServlet {
                  String name=request.getParameter("addName");
                  float price=Float.valueOf(request.getParameter("addPrice"));
                  Item item=new Item(category,name,price,email);
+                
                  if(id==-1)
                  {
                      idb.insert(item);
@@ -105,6 +106,7 @@ public class InventoryServlet extends HttpServlet {
                  else
                  {
                      idb.update(item, id);
+                     
                  }
                  session.setAttribute("editId","-1");
             }

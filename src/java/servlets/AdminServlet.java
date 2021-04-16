@@ -92,6 +92,7 @@ public class AdminServlet extends HttpServlet {
         CategoryDB cdb=new CategoryDB();
         List<Category> categorys=cdb.getAll();
         request.setAttribute("categorys",categorys);
+       
         if(user.getRole()==1&&method.equals("add"))
         {
            
@@ -114,6 +115,17 @@ public class AdminServlet extends HttpServlet {
             {
                 if(us.getEmail().equals(newEmail))
                 {
+                    try{ItemDB idb=new ItemDB();
+                    List<Item> items=idb.getAll(us.getEmail());
+                    for(Item thisItem:items)
+                    {
+                        idb.delete(thisItem.getItemID());
+                    }
+                    }
+                    catch(Exception e)
+                    {
+                    }
+                    
                     udb.delete(us);
                 }
             }
@@ -137,11 +149,22 @@ public class AdminServlet extends HttpServlet {
         {
             String thisEmail=request.getParameter("thisEmail");
             User thisUser=udb.get(thisEmail);
-            if(!email.equals(thisEmail))
+            if(thisUser!=null)
             {
+                  try{ItemDB idb=new ItemDB();
+                    List<Item> items=idb.getAll(thisEmail);
+                    for(Item thisItem:items)
+                    {
+                        idb.delete(thisItem.getItemID());
+                    }
+                    }
+                    catch(Exception e)
+                    {
+                    }
                 udb.delete(thisUser);
             }
-            users=udb.getAll();request.setAttribute("users",users);
+            users=udb.getAll();
+            request.setAttribute("users",users);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
            return;
