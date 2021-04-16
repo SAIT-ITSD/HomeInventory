@@ -38,19 +38,14 @@
                         <form action="inventory" method="post">
                             <input type="submit" value="delete">
                             <input type="hidden"  name="method" value="delete">
-                            <input type="hidden" name="deleteCategory" value="${item.category}">
-                            <input type="hidden" name="deleteItemName" value="${item.itemName}">
-                            <input type="hidden" name="deletePrice" value="${item.price}">
+                            <input type="hidden" name="deleteItem" value="${item.itemID}"> 
                         </form>
                     </td>
                  <td>
                         <form action="inventory" method="post">
                             <input type="submit" value="edit">
                             <input type="hidden"  name="method" value="edit">
-                            <input type="hidden" name="editCategory" value="${item.category}">
-                            <input type="hidden" name="editItemName" value="${item.itemName}">
-                            <input type="hidden" name="editPrice" value="${item.price}">
-                            <input type="hidden" name="oldItemName" value="${item.itemName}">
+                            <input type="hidden" name="editItem" value="${item.itemID}">
                         </form>
                     </td>
                   </tr>
