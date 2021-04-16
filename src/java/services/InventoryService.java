@@ -17,15 +17,15 @@ import dataaccess.UserDB;
 import java.util.List;
 import models.User;
 public class InventoryService {
-    public boolean authentification(String ItemName,String email)
+    public boolean authentification(String ownerName,int itemId)
     {
         boolean isTrue=false;
         ItemDB idb=new ItemDB();
         UserDB udb=new UserDB();
         try {
-            Item item=idb.get(ItemName,email);
+            Item item=idb.get(itemId);
            User user=udb.get(item.getOwner());
-           if(user != null)
+           if(item.getOwner().equals(user.getEmail()))
            {
                 isTrue=true;
            }

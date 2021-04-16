@@ -16,8 +16,17 @@ public class Item implements Serializable{
      String itemName;
      float price;
      String owner;
+int itemID;
 
     public Item() {
+    }
+
+    public Item(int itemID,int category, String itemName, float price, String owner ) {
+        this.category = category;
+        this.itemName = itemName;
+        this.price = price;
+        this.owner = owner;
+        this.itemID = itemID;
     }
 
     public Item(int category, String itemName, float price, String owner) {
@@ -58,5 +67,14 @@ public class Item implements Serializable{
     public void setOwner(String owner) {
         this.owner = owner;
     }
+
+    public int getItemID() {
+        return itemID;
+    }
+
+    public void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
     
+   
 }

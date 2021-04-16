@@ -73,6 +73,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
         String email=(String)request.getParameter("email");
         session.setAttribute("email",email);
+        session.setAttribute("editId","-1");
         if(email!=null)
         {
            UserDB udb=new UserDB();

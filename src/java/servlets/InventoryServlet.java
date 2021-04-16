@@ -67,19 +67,20 @@ public class InventoryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
           HttpSession session = request.getSession();
         String email=(String)session.getAttribute("email");
         UserDB udb=new UserDB();
         ItemDB idb=new ItemDB();
         CategoryDB cdb=new CategoryDB();
-        String toDo=request.getParameter("toDo");
+         
+        String method=request.getParameter("method");
          try {
         List<Item> items=idb.getAll(email);
         request.setAttribute("items",items);
         User user=udb.get(email);
         List<Category> categorys=cdb.getAll();
         request.setAttribute("categorys",categorys);
+       
            if(user==null)
         {
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
@@ -88,66 +89,57 @@ public class InventoryServlet extends HttpServlet {
         }
         else
         {
-            String method=request.getParameter("method");
+            
             if(method.equals("insert"))
+            {   
+                String idLabel=(String)session.getAttribute("editId");
+                int id=Integer.parseInt(idLabel);
+                 int category=Integer.parseInt(request.getParameter("categorys"));
+                 String name=request.getParameter("addName");
+                 float price=Float.valueOf(request.getParameter("addPrice"));
+                 Item item=new Item(category,name,price,email);
+                 if(id==-1)
+                 {
+                     idb.insert(item);
+                 }
+                 else
+                 {
+                     idb.update(item, id);
+                 }
+                 session.setAttribute("editId","-1");
+            }
+            else if(method.equals("delete"))
             {
-                String Cat=(String)request.getParameter("categorys");
-                int addCategory;
-                addCategory = Integer.parseInt(Cat);
-                String addName=request.getParameter("addName");
-                String addPrice=request.getParameter("addPrice");
-                float price=Float.parseFloat(addPrice);
-                Item item=new Item(addCategory,addName,price,email);
-                String oldItemName=(String)session.getAttribute("oldItemName");
-                if(oldItemName!=null)
+                int itemId=Integer.parseInt(request.getParameter("deleteItem"));
+                Item item=idb.get(itemId);
+                if(item!=null)
                 {
-                    
-                    idb.update(item, oldItemName);
-                }
-                else
-                {
-                    idb.insert(item);
+                    idb.delete(itemId);
                 }
                 
-                session.setAttribute("oldItemName",null);
-                   request.setAttribute("updatedName",null);
-               request.setAttribute("updatedPrice",null);
-            
             }
-             if(method.equals("edit"))
+            else if(method.equals("edit"))
             {
-                int editCategory= Integer. parseInt(request.getParameter("editCategory"));
-               String editName=request.getParameter("editItemName");
-               String editPrice=request.getParameter("editPrice");
-               float price=Float.parseFloat(editPrice);
-               String oldItemName=request.getParameter("oldItemName");
-               Item item=idb.get(email, editName);
-              session.setAttribute("editItemName",editName);
-               session.setAttribute("editPrice",editPrice);
-               session.setAttribute("editCategory",editCategory);
-               session.setAttribute("oldItemName",oldItemName);
-               request.setAttribute("updatedName",editName);
-               request.setAttribute("updatedPrice",editPrice);
-            }
-              if(method.equals("delete"))
-            {
-
-                int deleteCategory=Integer. parseInt(request.getParameter("deletecategory"));
-              String deleteName=request.getParameter("deleteItemName");
-             Item item=idb.get(email, deleteName);
-              
-               idb.delete(item);
+                int itemId=Integer.parseInt(request.getParameter("editItem"));
+                Item item=idb.get(itemId);
+                request.setAttribute("updatedName",item.getOwner());
+                request.setAttribute("updatedPrice",item.getPrice());
+                session.setAttribute("editId",Integer.toString(item.getItemID()));
+                int tester=item.getItemID();
             }
             
             
           
             
            
-            
-            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                .forward(request,response);
+        
+           
                items=idb.getAll(email);
-        request.setAttribute("items",items);
+        request.setAttribute("items",items); 
+        getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                .forward(request,response);
+                   request.setAttribute("updatedName",null);
+               request.setAttribute("updatedPrice",null);
            return;
         }
         

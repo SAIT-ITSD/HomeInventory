@@ -193,7 +193,10 @@ public class AdminServlet extends HttpServlet {
               else
               {
                   cdb.insert((highest), getName);
+                  
               }
+              categorys=cdb.getAll();
+        request.setAttribute("categorys",categorys);
         }
           else if(user==null)
         {
