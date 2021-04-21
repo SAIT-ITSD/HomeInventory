@@ -59,10 +59,18 @@
         <h3>First Name: <input type="text" name="newFirstName" value="${updatedFirstName}"></h3>
         <h3>Last Name: <input type="text" name="newLastName" value="${updatedLastName}"></h3>
         <h3>Password: <input type="text" name="newPassword" value="${updatedPassword}"></h3>
+        
         <h3>
             <select name="newActive">
                 <option value="on">on</option>
                 <option value="off">off</option>
+            </select>
+        </h3> 
+        <h3>
+            <select name="newRole">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
             </select>
         </h3>
         <input type="submit" value="Save">
@@ -98,6 +106,10 @@
         <h3>category Name: <input type="text" name="newCategoryName" value="${newCategoryName}"></h3> 
           <input type="submit" value="submit">
         </form>
+          <form action='admin' method='post'>
+              <input type="hidden"  name="method" value="txtList">
+              <h3>update user text file: <input type="submit" value="submit"></h3>
+          </form>
          <a href="login?log=out">logout</a>
          
     </body>

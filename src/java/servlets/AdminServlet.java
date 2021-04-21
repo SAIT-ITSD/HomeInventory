@@ -9,8 +9,12 @@ import dataaccess.CategoryDB;
 import dataaccess.ItemDB;
 import dataaccess.UserDB;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -100,6 +104,7 @@ public class AdminServlet extends HttpServlet {
             String newPassword=request.getParameter("newPassword");
             String newFirstName=request.getParameter("newFirstName");
             String newLastName=request.getParameter("newLastName");
+            int newRole=Integer.parseInt(request.getParameter("newRole"));
             int active;
             String newActive=request.getParameter("newActive");
             if(newActive.equals("on"))
@@ -110,7 +115,7 @@ public class AdminServlet extends HttpServlet {
             {
                 active=0;
             }
-            User newUser=new User(newEmail,active,newFirstName,newLastName,newPassword,2);
+            User newUser=new User(newEmail,active,newFirstName,newLastName,newPassword,newRole);
             for(User us:users)
             {
                 if(us.getEmail().equals(newEmail))
@@ -177,6 +182,7 @@ public class AdminServlet extends HttpServlet {
             String newPassword=thisUser.getPassword();
             String newFirstName=thisUser.getFirstName();
             String newLastName=thisUser.getLastName();
+            
             request.setAttribute("updatedEmail",newEmail);
             request.setAttribute("updatedPassword",newPassword);
              request.setAttribute("updatedFirstName",newFirstName);
@@ -220,6 +226,41 @@ public class AdminServlet extends HttpServlet {
               }
               categorys=cdb.getAll();
         request.setAttribute("categorys",categorys);
+        }
+        else if(user.getRole()==1&&method.equals("txtList"))
+        {
+            List<String> list=udb.getQntyCount();
+            //this new arraylist is to fix a bug where if no number is present the quantity instead was the email.
+            List<List<String>> userDoc = new ArrayList<>();
+            
+            for(int i = 0; i < list.size(); i++)
+            {
+                List<String> cells = new ArrayList<>();
+                String line=list.get(i);
+                int index=line.indexOf(",");
+                String name=line.substring(0,index);
+                String quantity=line.substring(index+1);
+                int intQty=0;
+                try
+                {
+                    intQty=Integer.parseInt(quantity); 
+                }
+                catch (Exception ex) 
+                {
+                 intQty=0;
+                }
+                quantity=String.valueOf(intQty);
+                cells.add(name);
+                cells.add(quantity);
+                userDoc.add(cells); 
+            }
+            //now onto insert each line into an xlsx file.
+            
+           
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+              .forward(request,response);
+           return;
+              
         }
           else if(user==null)
         {

@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        String welcomeEmail=(String)request.getAttribute("release");
        try { 
            String log=(String)request.getParameter("log");
             HttpSession session = request.getSession();
@@ -70,10 +70,11 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
          request.setAttribute("message"," ");
-            HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         String email=(String)request.getParameter("email");
         session.setAttribute("email",email);
         session.setAttribute("editId","-1");
+        String path = getServletContext().getRealPath("/WEB-INF");
         if(email!=null)
         {
            UserDB udb=new UserDB();
@@ -84,12 +85,22 @@ public class LoginServlet extends HttpServlet {
                     String username=user.getFirstName()+" "+user.getLastName();
                     request.setAttribute("username",username);
                     String password=request.getParameter("password");
-                    CategoryDB cdb=new CategoryDB();List<Category> categorys=cdb.getAll();
+                    CategoryDB cdb=new CategoryDB();
+                    List<Category> categorys=cdb.getAll();
                             request.setAttribute("categorys",categorys);
+                            
                     if(user!=null&&user.getPassword().equals(password)&&user.getActive()==1)
                     {
                         
-                        
+                        if(user.getRole()==0)
+                        {
+                            String message="account is so far inactive.";
+                            request.setAttribute("message",message);
+                            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                                  .forward(request,response);
+                             request.setAttribute("message",null);
+                             return;
+                        }
                         if(user.getRole()==1)
                         {
                               
@@ -120,7 +131,9 @@ public class LoginServlet extends HttpServlet {
                     String message="you have set your account to inactive please contact the administrator to reactivate it.";
                     request.setAttribute("message",message);
                     }
-             } catch (Exception ex) {
+             } 
+             catch (Exception ex) 
+             {
                  Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
              }
              

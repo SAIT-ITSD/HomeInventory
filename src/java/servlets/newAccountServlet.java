@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import dataaccess.CheatDB;
 import dataaccess.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.User;
+import services.AccountService;
 
 /**
  *
@@ -41,7 +43,9 @@ public class newAccountServlet extends HttpServlet {
         String lastName=request.getParameter("RegisterLastName");
         String email=request.getParameter("RegisterEmail");
         String password=request.getParameter("RegisterPassword");
-        int role=2;
+        String path = getServletContext().getRealPath("/WEB-INF");
+        
+        int role=0;
         int active=1;
         User user;
         UserDB udb=new UserDB();
@@ -53,10 +57,15 @@ public class newAccountServlet extends HttpServlet {
                user=new User(email,active,firstName,lastName, password,role);
                 try {
                     udb.insert(user);
+                     AccountService as=new AccountService();
+                    as.welcome(email, password, path);
+                    CheatDB cdb=new CheatDB();
+                    String random=as.fullRandom();
+                    cdb.insert(random, email, password);
                 } catch (Exception ex1) {
                     Logger.getLogger(newAccountServlet.class.getName()).log(Level.SEVERE, null, ex1);
                 } 
-                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                getServletContext().getRequestDispatcher("/WEB-INF/welcome.jsp")
                 .forward(request,response);
                 return;
               }
@@ -64,6 +73,7 @@ public class newAccountServlet extends HttpServlet {
               request.setAttribute("dope", message);
               getServletContext().getRequestDispatcher("/WEB-INF/newAccount.jsp")
                 .forward(request,response);
+              request.setAttribute("dope", null);
               return;
            } 
            catch (Exception ex) 

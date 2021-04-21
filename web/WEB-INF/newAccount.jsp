@@ -18,8 +18,10 @@
               <h3>Last Name: <input type="text" name="RegisterLastName" ></h3>
                <h3>Password: <input type="text" name="RegisterPassword" ></h3> 
                <h3>Email: <input type="email" name="RegisterEmail" ></h3>
+              
             <input type="submit" value="submit">
         </form>
+        <a href='login'>login</a>
         <div>${dope}</div>
     </body>
 </html>

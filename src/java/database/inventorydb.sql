@@ -55,6 +55,25 @@ CREATE TABLE IF NOT EXISTS `inventorydb`.`item` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
+-- -----------------------------------------------------
+-- Table `inventorydb`.`role`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `inventorydb`.`forgot` (
+  `forgot_id` VARCHAR(50) NOT NULL,
+  `forgot_email` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`forgot_id`));
+CREATE TABLE IF NOT EXISTS `inventorydb`.`welcome` (
+  `welcome_id` VARCHAR(50) NOT NULL,
+  `welcome_email` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`welcome_id`));
+
+CREATE TABLE IF NOT EXISTS `inventorydb`.`cheat` (
+  `cheat_id` VARCHAR(50) NOT NULL,
+  `cheat_email` VARCHAR(50) NOT NULL,
+  `cheat_password` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`cheat_id`));
+
+INSERT INTO `role` VALUES (0, 'potential user');
 INSERT INTO `role` VALUES (1, 'system admin');
 INSERT INTO `role` VALUES (2, 'regular user');
 INSERT INTO `role` VALUES (3, 'company admin');

@@ -19,7 +19,8 @@
             <h3>Password: <input type="text" name="password" value="${session.password}"></h3>
             <input type="submit" name="submit" value="Log in">
         </form>
-            <li><a href="newAccount">sighn up</a></li>
+            <a href="newAccount">sighn up</a><br>
+            <a href="forgot">forgot password</a>
             <h3>${message}</h3>
     </body>
 </html>

@@ -46,7 +46,58 @@ public class UserDB {
 
         return users;
     }
+    // go back to
+  public List<String> getQntyCount() throws Exception {
+        List<String> items = new ArrayList<>();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection con = cp.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT last_name,first_name,email FROM user where role != 1 ORDER BY last_name,first_name";
+        List<String> userQty=null;
+        try 
+        {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) 
+            {
+                String item = rs.getString(1)+" "+rs.getString(2)+","+rs.getString(3);
+                items.add(item);
+            }
+            userQty = new ArrayList<String>();
+            for(String item:items)
+            {
+                userQty.add(item);
+            }
+             for (int i = 0; i < userQty.size(); i++) 
+             { 		      
+          	sql = "SELECT COUNT(item_name),owner FROM item where owner=? group by owner";
+                
+                ps = con.prepareStatement(sql);
+                String uqty=userQty.get(i);
+                int index=uqty.indexOf(",");
+                String target=uqty.substring(index+1);
+                ps.setString(1, target);
+                
+                rs = ps.executeQuery();
+                while(rs.next())
+                {
+                    String quantity=rs.getString(1);
+                    String focus=uqty.substring(0,index);
+                    userQty.set(i,focus+","+quantity);
+                }
+            }   
+         
+        } 
+        finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            cp.freeConnection(con);
+        }
 
+        return userQty;
+    }
     public User get(String email) throws Exception {
         User user = null;
         ConnectionPool cp = ConnectionPool.getInstance();
