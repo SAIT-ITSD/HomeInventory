@@ -50,7 +50,7 @@ public class welcomeServlet extends HttpServlet {
             
             try 
             {
-                thisCheat = cdb.get(cheat);
+                thisCheat = cdb.getById(cheat);
                 String cheatEmail=thisCheat.getCheatEmail();
                 User user=udb.get(cheatEmail);
                 //insert rest of code here.
@@ -107,6 +107,7 @@ public class welcomeServlet extends HttpServlet {
 
                                     getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                                         .forward(request,response);
+                                    String testing=(String)session.getAttribute("email");
                                    return;
                                 }
                             }

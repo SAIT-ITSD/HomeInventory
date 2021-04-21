@@ -15,7 +15,35 @@ import models.Cheat;
  * @author 828200
  */
 public class CheatDB {
-     public Cheat get(String cheatId) throws Exception {
+     public Cheat get(String cheatEmail) throws Exception {
+        Cheat cheat=null;
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection con = cp.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM cheat where cheat_email=?";
+        
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, cheatEmail);
+             
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                String cheatId = rs.getString(1);
+                String cheatPassword=rs.getString(3);
+                
+                cheat=new Cheat(cheatId,cheatEmail,cheatPassword);
+            }
+        }
+        catch(Exception e){e=e;} finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            cp.freeConnection(con);
+        }
+        
+        return cheat;
+    }
+ public Cheat getById(String cheatId) throws Exception {
         Cheat cheat=null;
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
@@ -28,13 +56,15 @@ public class CheatDB {
             ps.setString(1, cheatId);
              
             rs = ps.executeQuery();
-            if (rs.next()) {
+            if (rs.next()) 
+            {
                 String cheatEmail = rs.getString(2);
                 String cheatPassword=rs.getString(3);
                 
                 cheat=new Cheat(cheatId,cheatEmail,cheatPassword);
             }
-        } finally {
+        }
+        catch(Exception e){e=e;} finally {
             DBUtil.closeResultSet(rs);
             DBUtil.closePreparedStatement(ps);
             cp.freeConnection(con);

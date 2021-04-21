@@ -10,6 +10,7 @@ import dataaccess.ItemDB;
 import dataaccess.UserDB;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -83,7 +84,7 @@ public class AdminServlet extends HttpServlet {
  
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, FileNotFoundException {
         
             HttpSession session = request.getSession();
         String email=(String)session.getAttribute("email");
@@ -256,7 +257,16 @@ public class AdminServlet extends HttpServlet {
             }
             //now onto insert each line into an xlsx file.
             
-           
+          FileOutputStream fos=new FileOutputStream("customers.csv");
+           PrintWriter pw=new PrintWriter(fos);
+            for(int i=0;i<userDoc.size();i++)
+            {
+                List<String> cells = new ArrayList<>();
+                cells=userDoc.get(i);
+                pw.println(cells.get(0)+","+cells.get(1));
+            }
+           pw.close();
+           fos.close();
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
               .forward(request,response);
            return;
