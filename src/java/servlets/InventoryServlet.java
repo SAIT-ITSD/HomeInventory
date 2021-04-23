@@ -92,11 +92,25 @@ public class InventoryServlet extends HttpServlet {
             
             if(method.equals("insert"))
             {   
-                String idLabel=(String)session.getAttribute("editId");
-                int id=Integer.parseInt(idLabel);
-                 int category=Integer.parseInt(request.getParameter("categorys"));
-                 String name=request.getParameter("addName");
-                 float price=Float.valueOf(request.getParameter("addPrice"));
+                String idLabel=null;
+                int id=0;
+                int category =0; 
+                String name =null;
+                float price=0;
+                try
+                 {
+                    idLabel=(String)session.getAttribute("editId");
+                    id=Integer.parseInt(idLabel);
+                    category=Integer.parseInt(request.getParameter("categorys"));
+                    name=request.getParameter("addName");
+                    price=Float.valueOf(request.getParameter("addPrice"));
+                 }
+                 catch (Exception ex) 
+                 {
+                        getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                    .forward(request,response);
+                    return;
+                }
                  Item item=new Item(category,name,price,email);
                 
                  if(id==-1)

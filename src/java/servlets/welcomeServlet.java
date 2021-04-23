@@ -51,7 +51,17 @@ public class welcomeServlet extends HttpServlet {
             try 
             {
                 thisCheat = cdb.getById(cheat);
-                String cheatEmail=thisCheat.getCheatEmail();
+                String cheatEmail=null;
+                if(thisCheat!=null)
+                {
+                    cheatEmail=thisCheat.getCheatEmail();
+                }
+               else
+                {
+                    getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                   .forward(request,response);
+                    return;
+                }
                 User user=udb.get(cheatEmail);
                 //insert rest of code here.
                 session.setAttribute("email",user.getEmail());

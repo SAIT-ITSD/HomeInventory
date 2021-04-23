@@ -67,5 +67,6 @@
         </form>
             <a href="login?log=out">logout</a>
              <a href="login?log=inactive">inactive</a>
+             <h3>${invMessage}</h3>
     </body>
 </html>
