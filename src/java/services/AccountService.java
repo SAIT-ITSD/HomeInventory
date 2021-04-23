@@ -11,7 +11,7 @@ import models.User;
 
 public class AccountService {
     
-    public void forgot(String email, String password, String path) {
+    public void forgot(String email, String password, String path,String toUrl) {
         UserDB userDB = new UserDB();
         
         try {
@@ -21,7 +21,7 @@ public class AccountService {
                 
                 String to = user.getEmail();
                 String subject = "Forgot Password";
-                String template = path + "/emailtemplates/login.html";
+                String template = path + "/emailtemplates/forgot.html";
                 
                 HashMap<String, String> tags = new HashMap<>();
                 tags.put("firstname", user.getFirstName());
@@ -32,7 +32,7 @@ public class AccountService {
                     passcode+=String.valueOf(random());
                 }
                 tags.put("passcode", passcode);
-                
+                tags.put("link", toUrl);
                 GmailService.sendMail(to, subject, template, tags);
                ForgotDB fdb=new ForgotDB();
                fdb.insert(passcode,email);
@@ -41,7 +41,7 @@ public class AccountService {
         }
     
     }
-     public void welcome(String email, String password, String path) {
+     public void welcome(String email, String password, String path,String toPath) {
         UserDB userDB = new UserDB();
         
         try {
@@ -62,12 +62,14 @@ public class AccountService {
                     passcode+=String.valueOf(random());
                 }
                 tags.put("passcode", passcode);
-                
+                String newPath="";
+                tags.put("link", toPath);
                 GmailService.sendMail(to, subject, template, tags);
                WelcomeDB wdb=new WelcomeDB();
                wdb.insert(passcode,email);
             
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e=e;
         }
     

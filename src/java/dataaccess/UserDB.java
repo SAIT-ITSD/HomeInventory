@@ -142,7 +142,8 @@ public class UserDB {
             ps.setString(5, user.getPassword());
             ps.setInt(6, user.getRole());
             ps.executeUpdate();
-        } finally {
+        } catch(Exception e){e=e;}
+        finally {
             DBUtil.closePreparedStatement(ps);
             cp.freeConnection(con);
         }
@@ -180,7 +181,10 @@ public class UserDB {
             ps = con.prepareStatement(sql);
             ps.setString(1, user.getEmail());
             ps.executeUpdate();
-        } finally {
+        } 
+        catch(Exception e)
+        {e=e;}
+        finally {
             DBUtil.closePreparedStatement(ps);
             cp.freeConnection(con);
         }

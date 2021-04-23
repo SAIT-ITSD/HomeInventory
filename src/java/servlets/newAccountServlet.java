@@ -29,7 +29,12 @@ public class newAccountServlet extends HttpServlet {
        @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                
+            String validate=request.getParameter("validate");
+                if(validate!=null)
+                {
+                      getServletContext().getRequestDispatcher("/WEB-INF/welcome.jsp")
+                .forward(request,response);
+                }
                  getServletContext().getRequestDispatcher("/WEB-INF/newAccount.jsp")
                 .forward(request,response);
             }
@@ -58,14 +63,16 @@ public class newAccountServlet extends HttpServlet {
                 try {
                     udb.insert(user);
                      AccountService as=new AccountService();
-                    as.welcome(email, password, path);
+                     String url = request.getRequestURL().toString();
+                     url+="?validate=validate";
+                    as.welcome(email, password, path,url);
                     CheatDB cdb=new CheatDB();
                     String random=as.fullRandom();
                     cdb.insert(random, email, password);
                 } catch (Exception ex1) {
                     Logger.getLogger(newAccountServlet.class.getName()).log(Level.SEVERE, null, ex1);
                 } 
-                getServletContext().getRequestDispatcher("/WEB-INF/welcome.jsp")
+                getServletContext().getRequestDispatcher("/WEB-INF/newAccount.jsp")
                 .forward(request,response);
                 return;
               }

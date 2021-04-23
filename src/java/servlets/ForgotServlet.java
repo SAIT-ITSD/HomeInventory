@@ -31,6 +31,13 @@ public class ForgotServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String dude=request.getParameter("dude");
+        if(dude!=null)
+        {
+         getServletContext().getRequestDispatcher("/WEB-INF/confirmPassword.jsp")
+                .forward(request,response);
+         return;
+        }
         getServletContext().getRequestDispatcher("/WEB-INF/forgotPassword.jsp")
                 .forward(request,response);
     }
@@ -69,10 +76,11 @@ public class ForgotServlet extends HttpServlet {
                 //simple return to page if email is incorrect
             }
             AccountService as=new AccountService();
-            
-            as.forgot(email, password, path);
+            String url = request.getRequestURL().toString();
+             url+="?dude="+"dude";
+            as.forgot(email, password, path,url);
             request.setAttribute("passwordMessage","if you're email and password were entered correctly email has been sent with your passcode."); 
-            getServletContext().getRequestDispatcher("/WEB-INF/confirmPassword.jsp")
+            getServletContext().getRequestDispatcher("/WEB-INF/forgotPassword.jsp")
                 .forward(request,response);
             request.setAttribute("passwordMessage",null); 
             

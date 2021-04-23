@@ -155,19 +155,22 @@ public class AdminServlet extends HttpServlet {
         {
             String thisEmail=request.getParameter("thisEmail");
             User thisUser=udb.get(thisEmail);
-            if(thisUser!=null)
+            if(!email.equals(thisUser.getEmail()))
             {
-                  try{ItemDB idb=new ItemDB();
-                    List<Item> items=idb.getAll(thisEmail);
-                    for(Item thisItem:items)
-                    {
-                        idb.delete(thisItem.getItemID());
-                    }
-                    }
-                    catch(Exception e)
-                    {
-                    }
-                udb.delete(thisUser);
+                if(thisUser!=null)
+                {
+                      try{ItemDB idb=new ItemDB();
+                        List<Item> items=idb.getAll(thisEmail);
+                        for(Item thisItem:items)
+                        {
+                            idb.delete(thisItem.getItemID());
+                        }
+                        }
+                        catch(Exception e)
+                        {
+                        }
+                    udb.delete(thisUser);
+                }
             }
             users=udb.getAll();
             request.setAttribute("users",users);
