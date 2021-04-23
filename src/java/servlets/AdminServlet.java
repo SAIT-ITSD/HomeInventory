@@ -239,7 +239,9 @@ public class AdminServlet extends HttpServlet {
                 List<String> cells = new ArrayList<>();
                 String line=list.get(i);
                 int index=line.indexOf(",");
-                String name=line.substring(0,index);
+                int index2=line.indexOf(" ");
+                String name=line.substring(0,index2);
+                String lName=line.substring(index2,index);
                 String quantity=line.substring(index+1);
                 int intQty=0;
                 try
@@ -252,21 +254,24 @@ public class AdminServlet extends HttpServlet {
                 }
                 quantity=String.valueOf(intQty);
                 cells.add(name);
+                cells.add(lName);
                 cells.add(quantity);
                 userDoc.add(cells); 
             }
             //now onto insert each line into an xlsx file.
-            
-          FileOutputStream fos=new FileOutputStream("customers.csv");
+           
+             String path = getServletContext().getRealPath("/WEB-INF/customers.csv");
+          FileOutputStream fos=new FileOutputStream(path);
            PrintWriter pw=new PrintWriter(fos);
             for(int i=0;i<userDoc.size();i++)
             {
                 List<String> cells = new ArrayList<>();
                 cells=userDoc.get(i);
-                pw.println(cells.get(0)+","+cells.get(1));
+                pw.println(cells.get(0)+","+cells.get(1)+","+cells.get(2));
             }
            pw.close();
            fos.close();
+           
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
               .forward(request,response);
            return;
