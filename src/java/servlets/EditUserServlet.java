@@ -43,9 +43,12 @@ public class EditUserServlet extends HttpServlet {
         User user=null;
         try {
             user = udb.get(email);
+            String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);  
         } catch (Exception ex) {
             Logger.getLogger(EditUserServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         try {
                 List<User> users=udb.getAll();
         request.setAttribute("users",users);  
@@ -58,6 +61,7 @@ public class EditUserServlet extends HttpServlet {
             
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
+            request.setAttribute("username",null);
            return;
         }
             user = udb.get(email);
@@ -71,6 +75,7 @@ public class EditUserServlet extends HttpServlet {
         
         getServletContext().getRequestDispatcher("/WEB-INF/edit.jsp")
                 .forward(request,response);
+        request.setAttribute("username",null);
            return;
         
     }
@@ -88,12 +93,15 @@ public class EditUserServlet extends HttpServlet {
         {
            getServletContext().getRequestDispatcher("/WEB-INF/edit.jsp")
                 .forward(request,response);
+           request.setAttribute("username",null);
            return;
         }
         UserDB udb=new UserDB();
         User user;
         try {
             user = udb.get(email); 
+            String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
             user.setFirstName(EditFirstName);
             user.setLastName(EditLastName);
             user.setPassword(EditPassword);
@@ -116,6 +124,7 @@ public class EditUserServlet extends HttpServlet {
       
         getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
+        request.setAttribute("username",null);
            return;
     }
 

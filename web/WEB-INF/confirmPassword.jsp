@@ -15,8 +15,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300&family=Noto+Serif:ital@1&family=Roboto+Condensed:ital,wght@1,300&display=swap" rel="stylesheet">
     </head>
     <body>
-        <h1>Home Inventory</h1>
+        <h1>HOME nVentory </h1>
         <h2>Forgot password</h2>
+         <h2>${username}</h2>
         <h3> enter you're confirmation code and a new password for you're account.</h3>
         <form action="forgot" method="post">
             <h3>enter your confirmation code: <input type="text" name="confirmation">

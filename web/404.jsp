@@ -16,8 +16,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300&family=Noto+Serif:ital@1&family=Roboto+Condensed:ital,wght@1,300&display=swap" rel="stylesheet">
     </head>
     <body>
-        <h1>Home Inventory</h1>
+        <h1>HOME nVentory </h1>
          <h2>404 file not found</h2>
+          <h2>${username}</h2>
          <h3><b>menu</b></h3>
         <ul>
             <li><a href="inventory">inventory</a></li>

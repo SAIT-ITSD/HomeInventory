@@ -38,13 +38,15 @@ public class InventoryServlet extends HttpServlet {
              List<Item> items=idb.getAll(email);
          request.setAttribute("items",items);
         User user=udb.get(email);
+        String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
           CategoryDB cdb=new CategoryDB();
         List<Category> categorys=cdb.getAll();
         request.setAttribute("categorys",categorys);
          if(user==null)
         {
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
         }
          
@@ -56,12 +58,12 @@ public class InventoryServlet extends HttpServlet {
         {
             
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
         }
         else
         {
-            String username=user.getFirstName()+" "+user.getLastName();
+              username=user.getFirstName()+" "+user.getLastName();
                     request.setAttribute("username",username);
                         getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                     .forward(request,response);
@@ -73,7 +75,7 @@ public class InventoryServlet extends HttpServlet {
              Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
          }
        getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
           
     }
@@ -93,13 +95,15 @@ public class InventoryServlet extends HttpServlet {
         List<Item> items=idb.getAll(email);
         request.setAttribute("items",items);
         User user=udb.get(email);
+        String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
         List<Category> categorys=cdb.getAll();
         request.setAttribute("categorys",categorys);
        
            if(user==null)
         {
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
         }
         else
@@ -122,8 +126,7 @@ public class InventoryServlet extends HttpServlet {
                  }
                  catch (Exception ex) 
                  {
-                     String username=user.getFirstName()+" "+user.getLastName();
-                    request.setAttribute("username",username);
+                     
                         getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                     .forward(request,response);
                        request.setAttribute("username",null); 
@@ -166,11 +169,11 @@ public class InventoryServlet extends HttpServlet {
             }
                items=idb.getAll(email);
         request.setAttribute("items",items); 
-        String username=user.getFirstName()+" "+user.getLastName();
+        username=user.getFirstName()+" "+user.getLastName();
                     request.setAttribute("username",username);
                     request.setAttribute("invMessage",inventoryMessage);
                         getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                    .forward(request,response);
+                    .forward(request,response);request.setAttribute("username",null);
                         request.setAttribute("username",null);
                        request.setAttribute("username",null); 
                    request.setAttribute("updatedName",null);
@@ -182,7 +185,7 @@ public class InventoryServlet extends HttpServlet {
              Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
          }
        getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
     }
 }

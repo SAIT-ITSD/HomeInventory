@@ -46,6 +46,8 @@ public class AdminServlet extends HttpServlet {
            List<User> users=udb.getAll();
         request.setAttribute("users",users);  
         User user=udb.get(email);
+        String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
            CategoryDB cdb=new CategoryDB();
         List<Category> categorys=cdb.getAll();
         request.setAttribute("categorys",categorys);
@@ -53,13 +55,13 @@ public class AdminServlet extends HttpServlet {
         {
             
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
         }
         else if(user==null)
         {
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
         }
         else
@@ -67,8 +69,6 @@ public class AdminServlet extends HttpServlet {
              ItemDB idb=new ItemDB();
              List<Item> items=idb.getAll(email);
          request.setAttribute("items",items);
-             String username=user.getFirstName()+" "+user.getLastName();
-                    request.setAttribute("username",username);
                         getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                     .forward(request,response);
                        request.setAttribute("username",null); 
@@ -78,7 +78,7 @@ public class AdminServlet extends HttpServlet {
              Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
          }
        getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
         
           
@@ -96,6 +96,8 @@ public class AdminServlet extends HttpServlet {
         UserDB udb=new UserDB();
          try {
         User user=udb.get(email);
+        String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
         List<User> users=udb.getAll();
         request.setAttribute("users",users);
         CategoryDB cdb=new CategoryDB();
@@ -153,7 +155,7 @@ public class AdminServlet extends HttpServlet {
              message="account succesfully added/edited.";
              request.setAttribute("adminMsg",message);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
             request.setAttribute("adminMsg",null);
            return;
         }
@@ -184,7 +186,7 @@ public class AdminServlet extends HttpServlet {
               message="account has been succesfully deleted.";
              request.setAttribute("adminMsg",message);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
             request.setAttribute("adminMsg",null);
            return;
         }
@@ -206,7 +208,7 @@ public class AdminServlet extends HttpServlet {
                message="account can now be edited.";
              request.setAttribute("adminMsg",message);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
             request.setAttribute("adminMsg",null);
            return;
         }
@@ -247,52 +249,62 @@ public class AdminServlet extends HttpServlet {
         }
         else if(user.getRole()==1&&method.equals("txtList"))
         {
-            List<String> list=udb.getQntyCount();
-            //this new arraylist is to fix a bug where if no number is present the quantity instead was the email.
-            List<List<String>> userDoc = new ArrayList<>();
-            
-            for(int i = 0; i < list.size(); i++)
-            {
-                List<String> cells = new ArrayList<>();
-                String line=list.get(i);
-                int index=line.indexOf(",");
-                int index2=line.indexOf(" ");
-                String name=line.substring(0,index2);
-                String lName=line.substring(index2,index);
-                String quantity=line.substring(index+1);
-                int intQty=0;
-                try
+           
+               List<String> list=udb.getQntyCount();
+           
+                //this new arraylist is to fix a bug where if no number is present the quantity instead was the email.
+                List<List<String>> userDoc = new ArrayList<>();
+
+                for(int i = 0; i < list.size(); i++)
                 {
-                    intQty=Integer.parseInt(quantity); 
+                    List<String> cells = new ArrayList<>();
+                    String line=list.get(i);
+                    int index=line.indexOf(",");
+                    int index2=line.indexOf(" ");
+                    String name=line.substring(0,index2);
+                    String lName=line.substring(index2,index);
+                    String quantity=line.substring(index+1);
+                    int intQty=0;
+                    try
+                    {
+                        intQty=Integer.parseInt(quantity); 
+                    }
+                    catch (Exception ex) 
+                    {
+                     intQty=0;
+                    }
+                    quantity=String.valueOf(intQty);
+                    cells.add(lName);
+                    cells.add(name);
+                    cells.add(quantity);
+                    userDoc.add(cells); 
                 }
-                catch (Exception ex) 
-                {
-                 intQty=0;
-                }
-                quantity=String.valueOf(intQty);
-                cells.add(name);
-                cells.add(lName);
-                cells.add(quantity);
-                userDoc.add(cells); 
-            }
+           
             //now onto insert each line into an xlsx file.
            
-             String path = getServletContext().getRealPath("/WEB-INF/customers.csv");
-          FileOutputStream fos=new FileOutputStream(path);
-           PrintWriter pw=new PrintWriter(fos);
-            for(int i=0;i<userDoc.size();i++)
-            {
-                List<String> cells = new ArrayList<>();
-                cells=userDoc.get(i);
-                pw.println(cells.get(0)+","+cells.get(1)+","+cells.get(2));
-            }
-           pw.close();
-           fos.close();
+            String path = getServletContext().getRealPath("/WEB-INF/customers.csv");
+           try
+           { 
+               FileOutputStream fos=new FileOutputStream(path);
+                PrintWriter pw=new PrintWriter(fos);
+                for(int i=0;i<userDoc.size();i++)
+                {
+                    List<String> cells = new ArrayList<>();
+                    cells=userDoc.get(i);
+                    pw.println(cells.get(0)+","+cells.get(1)+","+cells.get(2));
+                }
+               pw.close();
+               fos.close();
+           }
+           catch(Exception e)
+           {
+               e=e;
+           }
            
                message="customer.csv succesfully created/edited.";
              request.setAttribute("adminMsg",message);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
             request.setAttribute("adminMsg",null);
            return;
               
@@ -300,7 +312,7 @@ public class AdminServlet extends HttpServlet {
           else if(user==null)
         {
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
         }
         else
@@ -309,10 +321,8 @@ public class AdminServlet extends HttpServlet {
          
              List<Item> items=idb.getAll(email);
          request.setAttribute("items",items);
-             String username=user.getFirstName()+" "+user.getLastName();
-                    request.setAttribute("username",username);
                         getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                    .forward(request,response);
+                    .forward(request,response);request.setAttribute("username",null);
                        request.setAttribute("username",null); 
            return;
         }
@@ -321,7 +331,7 @@ public class AdminServlet extends HttpServlet {
          }
           request.setAttribute("adminMsg",message);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
             request.setAttribute("adminMsg",null);
            return;
         

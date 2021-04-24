@@ -36,13 +36,13 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String welcomeEmail=(String)request.getAttribute("release");
-        String inactiveMessage="account succesfully inactivated.";
+        String inactiveMessage="account succesfully inactivated.";User user=null;
        try { 
            String log=(String)request.getParameter("log");
             HttpSession session = request.getSession();
             String email=(String)session.getAttribute("email");
             UserDB  udb=new UserDB();
-            User user=udb.get(email);
+            user=udb.get(email);
             
         
         if(log.equals("out"))
@@ -55,15 +55,22 @@ public class LoginServlet extends HttpServlet {
                 udb.update(user);
              session.invalidate();
              request.setAttribute("message",inactiveMessage);
-        }
+        }String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
      } catch (Exception ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+       if(user!=null)
+       {
+           String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
+       }
+     
         getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response); 
+                .forward(request,response); request.setAttribute("username",null);
         request.setAttribute("message",null);
     }
 
@@ -84,8 +91,11 @@ public class LoginServlet extends HttpServlet {
                     List<User> users=udb.getAll();
                     request.setAttribute("users",users); 
                     User user=udb.get(email);
+                     if(user!=null)
+                {
                     String username=user.getFirstName()+" "+user.getLastName();
-                    request.setAttribute("username",username);
+                             request.setAttribute("username",username);
+                }
                     String password=request.getParameter("password");
                     CategoryDB cdb=new CategoryDB();
                     List<Category> categorys=cdb.getAll();
@@ -99,7 +109,7 @@ public class LoginServlet extends HttpServlet {
                             String message="account is so far inactive.";
                             request.setAttribute("message",message);
                             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                                  .forward(request,response);
+                                  .forward(request,response);request.setAttribute("username",null);
                              request.setAttribute("message",null);
                              return;
                         }
@@ -107,7 +117,7 @@ public class LoginServlet extends HttpServlet {
                         {
                               
                             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                                .forward(request,response);
+                                .forward(request,response);request.setAttribute("username",null);
                            return;
                         }
                         else
@@ -118,7 +128,7 @@ public class LoginServlet extends HttpServlet {
                             request.setAttribute("items",items);
                             
                             getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                                .forward(request,response);
+                                .forward(request,response);request.setAttribute("username",null);
                            return;
                         }
                     }
@@ -128,6 +138,8 @@ public class LoginServlet extends HttpServlet {
                 User user;
              try {
                  user = udb.get(email);
+                 String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
                  if(user.getActive()==0)
                     {
                     String message="you have set your account to inactive please contact the administrator to reactivate it.";
@@ -140,7 +152,7 @@ public class LoginServlet extends HttpServlet {
              }
              
            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
         }
     }

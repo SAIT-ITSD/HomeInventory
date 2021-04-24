@@ -16,8 +16,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300&family=Noto+Serif:ital@1&family=Roboto+Condensed:ital,wght@1,300&display=swap" rel="stylesheet">
     </head>
     <body>
-        <h1>Home Inventory</h1>
+        <h1>HOME nVentory </h1>
         <h2> Inventory</h2><br>
+        <h2>Inventory for ${username}</h2>
         <h3><b>menu</b></h3>
         <ul>
             <li><a href="inventory">inventory</a></li>
@@ -25,7 +26,7 @@
             <li><a href="admin">admin</a></li>
              <li><a href="edit">edit</a></li>
         </ul>
-        <h2>Inventory for ${username}</h2>
+        
              <table name="items"><tr>
                     <th>Category</th>
                     <th>Name</th>

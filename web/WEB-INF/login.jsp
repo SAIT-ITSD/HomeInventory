@@ -15,8 +15,16 @@
         <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300&family=Noto+Serif:ital@1&family=Roboto+Condensed:ital,wght@1,300&display=swap" rel="stylesheet">
     </head>
     <body>
-        <h1>Home Inventory</h1>
+        <h1>HOME nVentory </h1>
         <h2>Login</h2>
+         <h2>${username}</h2>
+          <h3><b>menu</b></h3>
+        <ul>
+            <li><a href="inventory">inventory</a></li>
+            <li><a href="login">login</a></li>
+            <li><a href="admin">admin</a></li>
+             <li><a href="edit">edit</a></li>
+        </ul>
         <form action="login" method="post">
             <h3>User Name:<input type="text" name="email" value="${session.username}"></h3>
             <h3>Password: <input type="text" name="password" value="${session.password}"></h3>

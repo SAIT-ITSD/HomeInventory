@@ -52,6 +52,14 @@ public class newAccountServlet extends HttpServlet {
             items = idb.getAll(email); 
             request.setAttribute("items",items);
         user=udb.get(email);
+        
+        if(user==null)
+        {
+            getServletContext().getRequestDispatcher("/WEB-INF/newAccount.jsp")
+                .forward(request,response);
+        }
+        String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
            List<User> users=udb.getAll();
         request.setAttribute("users",users);  
        CategoryDB cdb=new CategoryDB();
@@ -77,6 +85,9 @@ public class newAccountServlet extends HttpServlet {
         @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String thisEmail=(String)session.getAttribute("email");
+        
         String firstName=request.getParameter("RegisterFirstName");
         String lastName=request.getParameter("RegisterLastName");
         String email=request.getParameter("RegisterEmail");
@@ -87,6 +98,17 @@ public class newAccountServlet extends HttpServlet {
         int active=1;
         User user;
         UserDB udb=new UserDB();
+        User thisUser=null;
+           try 
+           {
+                thisUser=udb.get(thisEmail);
+                String username=thisUser.getFirstName()+" "+thisUser.getLastName();
+                request.setAttribute("username",username);
+           } 
+           catch (Exception ex) 
+           {
+               Logger.getLogger(newAccountServlet.class.getName()).log(Level.SEVERE, null, ex);
+           }
            try 
            {
               user=udb.get(email);
@@ -112,6 +134,7 @@ public class newAccountServlet extends HttpServlet {
                 request.setAttribute("dope", null);
                 return;
               }
+              
               String message="user already exists!";
               request.setAttribute("dope", message);
               getServletContext().getRequestDispatcher("/WEB-INF/newAccount.jsp")

@@ -15,8 +15,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300&family=Noto+Serif:ital@1&family=Roboto+Condensed:ital,wght@1,300&display=swap" rel="stylesheet">
     </head>
     <body>
-        <h1>Home Inventory</h1>
+        <h1>HOME nVentory </h1>
         <h2>Edit Account</h2>
+         <h2>${username}</h2>
            <h3><b>menu</b></h3>
            <h3>type into any of the text fields to edit an attribute click edit to save you're account changes.</h3>
         <ul>
@@ -33,6 +34,6 @@
                
             <input type="submit" value="edit">
         </form>
-               <a href='login'>login</a><a href="login?log=out">logout</a>
+               <a href='login'>login</a> <a href="login?log=out">logout</a>
     </body>
 </html>

@@ -22,7 +22,7 @@ a:hover,a:active {
 }
 a
 {
-    padding-bottom:5%;
+    padding-bottom:5%;text-decoration: none !important;
 }
 h1
 {

@@ -37,23 +37,34 @@ public class ForgotServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String dude=request.getParameter("dude");
-        if(dude!=null)
-        {
-         getServletContext().getRequestDispatcher("/WEB-INF/confirmPassword.jsp")
-                .forward(request,response);
-         return;
-        }
+       
         HttpSession session = request.getSession();
         String email=(String)session.getAttribute("email");
         UserDB udb=new UserDB();
         ItemDB idb=new ItemDB();
         
              List<Item> items; 
-             User user=null;
+             User user=null; 
+             if(dude!=null)
+        {
+            
+            try {
+                user=udb.get(email);
+            } catch (Exception ex) {
+                Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
+         getServletContext().getRequestDispatcher("/WEB-INF/confirmPassword.jsp")
+                .forward(request,response);request.setAttribute("username",null);
+         return;
+        }
         try {
             items = idb.getAll(email); 
             request.setAttribute("items",items);
         user=udb.get(email);
+        String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
            List<User> users=udb.getAll();
         request.setAttribute("users",users);  
        CategoryDB cdb=new CategoryDB();
@@ -65,13 +76,26 @@ public class ForgotServlet extends HttpServlet {
         
         if(user.getRole()==1)
         {
-            
+            try {
+                user=udb.get(email);
+            } catch (Exception ex) {
+                Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
            return;
         }
+        try {
+            user=udb.get(email);
+        } catch (Exception ex) {
+            Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
         getServletContext().getRequestDispatcher("/WEB-INF/forgotPassword.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
     }
 
    
@@ -79,8 +103,8 @@ public class ForgotServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String stage=(String)request.getParameter("stage");
-        boolean passed=false;
-        String email=request.getParameter("forgotEmail");
+        boolean passed=false;HttpSession session = request.getSession();
+        String email=(String)session.getAttribute("email");
         String confirmation=request.getParameter("confirmation");
         String password=request.getParameter("gmailPassword");
         String path = getServletContext().getRealPath("/WEB-INF");
@@ -89,12 +113,14 @@ public class ForgotServlet extends HttpServlet {
         User user=null;
         try 
         {
-            user=udb.get(email);
+            user=udb.get(email); String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
         } 
         catch (Exception ex) 
         {
             Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+       email=request.getParameter("forgotEmail");
         //we initialised stage,email and confirmation and initialised passed by fedault as false.
         if(stage.equals("get"))
         {
@@ -102,7 +128,7 @@ public class ForgotServlet extends HttpServlet {
             {
                 request.setAttribute("passwordMessage","there is no user with that email."); 
                 getServletContext().getRequestDispatcher("/WEB-INF/forgotPassword.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
                 request.setAttribute("passwordMessage",null); 
                 return;
                 //simple return to page if email is incorrect
@@ -112,8 +138,9 @@ public class ForgotServlet extends HttpServlet {
              url+="?dude="+"dude";
             as.forgot(email, password, path,url);
             request.setAttribute("passwordMessage","if you're email and password were entered correctly email has been sent with your passcode."); 
+            
             getServletContext().getRequestDispatcher("/WEB-INF/forgotPassword.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
             request.setAttribute("passwordMessage",null); 
             
             return;
@@ -149,7 +176,7 @@ public class ForgotServlet extends HttpServlet {
                 Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
           getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
           request.setAttribute("message",null);
             try 
             {
@@ -163,7 +190,7 @@ public class ForgotServlet extends HttpServlet {
         }
         request.setAttribute("passwordMessage","confirmation code is incorrect,try again.");  
          getServletContext().getRequestDispatcher("/WEB-INF/confirmPassword.jsp")
-                .forward(request,response);
+                .forward(request,response);request.setAttribute("username",null);
          request.setAttribute("passwordMessage",null); 
         //messahes have been configured correctly. 
     }

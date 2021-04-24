@@ -15,8 +15,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300&family=Noto+Serif:ital@1&family=Roboto+Condensed:ital,wght@1,300&display=swap" rel="stylesheet">
     </head>
     <body>
-        <h1>Home Inventory</h1>
+        <h1>HOME nVentory </h1>
         <h2>Create a new account</h2><br>
+         <h2>${username}</h2>
         <h3>fill in the fields below to create you're account.</h3>
         <h3>note if you're account already exists login or if you forgot you're password click the appropriate link below.</h3>
         <form action="newAccount" method="post">

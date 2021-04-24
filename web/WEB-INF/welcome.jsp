@@ -15,8 +15,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300&family=Noto+Serif:ital@1&family=Roboto+Condensed:ital,wght@1,300&display=swap" rel="stylesheet">
     </head>
     <body>
-        <h1>Home inventory</h1>
+        <h1>HOME nVentory </h1>
         <h2>Activate account</h2>
+         <h2>${username}</h2>
         <form action='welcome' method='post'>
         <h3>to activate you're account enter the activation passcode: <input type='text' name='welcomePasscode'></h3>
         <input type='submit' value='submit' >
