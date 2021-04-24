@@ -54,7 +54,7 @@ public class UserDB {
         PreparedStatement ps = null;
         ResultSet rs = null;
         
-        String sql = "SELECT last_name,first_name,email FROM user where role != 1 ORDER BY last_name,first_name";
+        String sql = "SELECT last_name,first_name,email FROM user where role != 1 and role!=0 ORDER BY last_name,first_name";
         List<String> userQty=null;
         try 
         {
