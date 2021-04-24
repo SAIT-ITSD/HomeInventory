@@ -61,22 +61,6 @@ public class welcomeServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(user==null)
-        {
-            String message="ther is no user that has said cheat passcode.";
-            request.setAttribute("message",message);
-            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-            .forward(request,response);
-            request.setAttribute("message",null);
-            return;
-        }
-        if(user.getRole()==1)
-        {
-            
-            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                .forward(request,response);
-           return;
-        }
         if(cheat!=null)
         {
          CheatDB cdb=new CheatDB();
@@ -160,6 +144,23 @@ public class welcomeServlet extends HttpServlet {
                 Logger.getLogger(welcomeServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        if(user==null)
+        {
+            String message="ther is no user that has said cheat passcode.";
+            request.setAttribute("message",message);
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+            .forward(request,response);
+            request.setAttribute("message",null);
+            return;
+        }
+        if(user.getRole()==1)
+        {
+            
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                .forward(request,response);
+           return;
+        }
+        
         getServletContext().getRequestDispatcher("/WEB-INF/welcome.jsp")
                 .forward(request,response);
     }
