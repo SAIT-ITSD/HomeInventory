@@ -48,7 +48,12 @@ public class ForgotServlet extends HttpServlet {
              if(dude!=null)
         {
             
-            try {
+          
+         getServletContext().getRequestDispatcher("/WEB-INF/confirmPassword.jsp")
+                .forward(request,response);request.setAttribute("username",null);
+         return;
+        }
+               try {
                 user=udb.get(email);
             } catch (Exception ex) {
                 Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,16 +66,10 @@ public class ForgotServlet extends HttpServlet {
             }
 String username=user.getFirstName()+" "+user.getLastName();
                     request.setAttribute("username",username);
-         getServletContext().getRequestDispatcher("/WEB-INF/confirmPassword.jsp")
-                .forward(request,response);request.setAttribute("username",null);
-         return;
-        }
         try {
             items = idb.getAll(email); 
             request.setAttribute("items",items);
         user=udb.get(email);
-        String username=user.getFirstName()+" "+user.getLastName();
-                    request.setAttribute("username",username);
            List<User> users=udb.getAll();
         request.setAttribute("users",users);  
        CategoryDB cdb=new CategoryDB();
@@ -92,7 +91,7 @@ String username=user.getFirstName()+" "+user.getLastName();
             } catch (Exception ex) {
                 Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-        String username=user.getFirstName()+" "+user.getLastName();
+        username=user.getFirstName()+" "+user.getLastName();
                     request.setAttribute("username",username);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);request.setAttribute("username",null);
@@ -103,8 +102,7 @@ String username=user.getFirstName()+" "+user.getLastName();
         } catch (Exception ex) {
             Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String username=user.getFirstName()+" "+user.getLastName();
-                    request.setAttribute("username",username);
+       
         getServletContext().getRequestDispatcher("/WEB-INF/forgotPassword.jsp")
                 .forward(request,response);request.setAttribute("username",null);
     }
@@ -135,15 +133,7 @@ String username=user.getFirstName()+" "+user.getLastName();
         //we initialised stage,email and confirmation and initialised passed by fedault as false.
         if(stage.equals("get"))
         {
-            if(user==null)
-            {
-                request.setAttribute("passwordMessage","there is no user with that email."); 
-                getServletContext().getRequestDispatcher("/WEB-INF/forgotPassword.jsp")
-                .forward(request,response);request.setAttribute("username",null);
-                request.setAttribute("passwordMessage",null); 
-                return;
-                //simple return to page if email is incorrect
-            }
+          
             AccountService as=new AccountService();
             String url = request.getRequestURL().toString();
              url+="?dude="+"dude";

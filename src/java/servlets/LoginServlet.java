@@ -80,6 +80,14 @@ public class LoginServlet extends HttpServlet {
         request.setAttribute("categorys",categorys);
         if(user.getRole()==1)
         {
+            UserDB udb=new UserDB();
+             List<User> users=null;
+                try {
+                    users = udb.getAll();
+                } catch (Exception ex) {
+                    Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        request.setAttribute("users",users);  
             
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);request.setAttribute("username",null);
