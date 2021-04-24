@@ -10,10 +10,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Admin</title>
+        <title>Admin Page</title>
     </head>
     <body>
-         <h1>Home Inventory</h1><br>
+         <h1>Home Inventory</h1>
+         <h2> Admin</h2><br>
         <h3><b>menu</b></h3>
         <ul>
             <li><a href="inventory">inventory</a></li>
@@ -21,6 +22,8 @@
             <li><a href="admin">admin</a></li>
              <li><a href="edit">edit</a></li>
         </ul>
+        <h3>${adminMsg}</h3>
+        <br>
         <h2>Manage Users</h2>
         <table name="users"><tr>
                     <th>Email</th>
@@ -108,7 +111,7 @@
         </form>
           <form action='admin' method='post'>
               <input type="hidden"  name="method" value="txtList">
-              <h3>update user text file: <input type="submit" value="submit"></h3>
+              <h3>update customer.csv file: <input type="submit" value="submit"></h3>
           </form>
          <a href="login?log=out">logout</a>
          

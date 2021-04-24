@@ -49,8 +49,11 @@ public class InventoryServlet extends HttpServlet {
         }
         else
         {
-            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                .forward(request,response);
+            String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
+                        getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                    .forward(request,response);
+                       request.setAttribute("username",null); 
            return;
         }
         
@@ -72,7 +75,7 @@ public class InventoryServlet extends HttpServlet {
         UserDB udb=new UserDB();
         ItemDB idb=new ItemDB();
         CategoryDB cdb=new CategoryDB();
-         
+         String inventoryMessage=null;
         String method=request.getParameter("method");
          try {
         List<Item> items=idb.getAll(email);
@@ -107,8 +110,11 @@ public class InventoryServlet extends HttpServlet {
                  }
                  catch (Exception ex) 
                  {
+                     String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
                         getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                     .forward(request,response);
+                       request.setAttribute("username",null); 
                     return;
                 }
                  Item item=new Item(category,name,price,email);
@@ -122,6 +128,7 @@ public class InventoryServlet extends HttpServlet {
                      idb.update(item, id);
                      
                  }
+                 inventoryMessage="item succesfully added/edited.";
                  session.setAttribute("editId","-1");
             }
             else if(method.equals("delete"))
@@ -131,6 +138,7 @@ public class InventoryServlet extends HttpServlet {
                 if(item!=null)
                 {
                     idb.delete(itemId);
+                    inventoryMessage="item succesfully deleted.";
                 }
                 
             }
@@ -142,18 +150,17 @@ public class InventoryServlet extends HttpServlet {
                 request.setAttribute("updatedPrice",item.getPrice());
                 session.setAttribute("editId",Integer.toString(item.getItemID()));
                 int tester=item.getItemID();
+                inventoryMessage="press save to save changed to item.";
             }
-            
-            
-          
-            
-           
-        
-           
                items=idb.getAll(email);
         request.setAttribute("items",items); 
-        getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                .forward(request,response);
+        String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
+                    request.setAttribute("invMessage",inventoryMessage);
+                        getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                    .forward(request,response);
+                        request.setAttribute("username",null);
+                       request.setAttribute("username",null); 
                    request.setAttribute("updatedName",null);
                request.setAttribute("updatedPrice",null);
            return;

@@ -9,11 +9,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>edit</title>
+        <title>Edit Account</title>
     </head>
     <body>
-        <h1>Home Inventory</h1><br>
+        <h1>Home Inventory</h1>
+        <h2>Edit Account</h2>
            <h3><b>menu</b></h3>
+           <h3>type into any of the text fields to edit an attribute click edit to save you're account changes.</h3>
         <ul>
             <li><a href="inventory">inventory</a></li>
             <li><a href="login">login</a></li>

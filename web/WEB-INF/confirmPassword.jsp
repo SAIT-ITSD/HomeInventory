@@ -9,10 +9,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Forgot password</title>
     </head>
     <body>
         <h1>Home Inventory</h1>
+        <h2>Forgot password</h2>
+        <h3> enter you're confirmation code and a new password for you're account.</h3>
         <form action="forgot" method="post">
             <h3>enter your confirmation code: <input type="text" name="confirmation">
                 

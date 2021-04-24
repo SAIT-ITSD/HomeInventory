@@ -36,13 +36,14 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String welcomeEmail=(String)request.getAttribute("release");
+        String inactiveMessage="account succesfully inactivated.";
        try { 
            String log=(String)request.getParameter("log");
             HttpSession session = request.getSession();
             String email=(String)session.getAttribute("email");
             UserDB  udb=new UserDB();
             User user=udb.get(email);
-        
+            
             user = udb.get(email);
         
         if(log.equals("out"))
@@ -54,6 +55,7 @@ public class LoginServlet extends HttpServlet {
            user.setActive(0);
                 udb.update(user);
              session.invalidate();
+             request.setAttribute("message",inactiveMessage);
         }
            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);
@@ -62,7 +64,8 @@ public class LoginServlet extends HttpServlet {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
-                .forward(request,response);   
+                .forward(request,response); 
+        request.setAttribute("message",null);
     }
 
  

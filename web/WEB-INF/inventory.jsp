@@ -13,7 +13,8 @@
         <title>Inventory</title>
     </head>
     <body>
-        <h1>Home Inventory</h1><br>
+        <h1>Home Inventory</h1>
+        <h2> Inventory</h2><br>
         <h3><b>menu</b></h3>
         <ul>
             <li><a href="inventory">inventory</a></li>

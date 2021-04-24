@@ -72,8 +72,11 @@ public class newAccountServlet extends HttpServlet {
                 } catch (Exception ex1) {
                     Logger.getLogger(newAccountServlet.class.getName()).log(Level.SEVERE, null, ex1);
                 } 
+                String message="account succesfully created! you will be given a confirmation email to activate you're account.If you're email entered exists.";
+              request.setAttribute("dope", message);
                 getServletContext().getRequestDispatcher("/WEB-INF/newAccount.jsp")
                 .forward(request,response);
+                request.setAttribute("dope", null);
                 return;
               }
               String message="user already exists!";

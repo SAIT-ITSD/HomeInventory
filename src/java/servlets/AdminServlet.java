@@ -67,8 +67,11 @@ public class AdminServlet extends HttpServlet {
              ItemDB idb=new ItemDB();
              List<Item> items=idb.getAll(email);
          request.setAttribute("items",items);
-            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                .forward(request,response);
+             String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
+                        getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                    .forward(request,response);
+                       request.setAttribute("username",null); 
            return;
         }
          } catch (Exception ex) {
@@ -89,6 +92,7 @@ public class AdminServlet extends HttpServlet {
             HttpSession session = request.getSession();
         String email=(String)session.getAttribute("email");
         String method=(String)request.getParameter("method");
+        String message=null;
         UserDB udb=new UserDB();
          try {
         User user=udb.get(email);
@@ -146,9 +150,11 @@ public class AdminServlet extends HttpServlet {
              request.setAttribute("updatedFirstName",null);
              request.setAttribute("updatedLastName",null);
              users=udb.getAll();request.setAttribute("users",users);
+             message="account succesfully added/edited.";
+             request.setAttribute("adminMsg",message);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
-            
+            request.setAttribute("adminMsg",null);
            return;
         }
         else if(user.getRole()==1&&method.equals("delete"))
@@ -164,6 +170,7 @@ public class AdminServlet extends HttpServlet {
                         for(Item thisItem:items)
                         {
                             idb.delete(thisItem.getItemID());
+                            message="user succesfully added/edited.";
                         }
                         }
                         catch(Exception e)
@@ -174,8 +181,11 @@ public class AdminServlet extends HttpServlet {
             }
             users=udb.getAll();
             request.setAttribute("users",users);
+              message="account has been succesfully deleted.";
+             request.setAttribute("adminMsg",message);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
+            request.setAttribute("adminMsg",null);
            return;
         }
         else if(user.getRole()==1&&method.equals("edit"))
@@ -193,8 +203,11 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("updatedLastName",newLastName);
            
           
+               message="account can now be edited.";
+             request.setAttribute("adminMsg",message);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
+            request.setAttribute("adminMsg",null);
            return;
         }
         else if(user.getRole()==1&&method.equals("editCategory"))
@@ -203,7 +216,7 @@ public class AdminServlet extends HttpServlet {
              String getName=request.getParameter("thisCategory");
              session.setAttribute("newCategoryId",getId);
              session.setAttribute("newCategoryName",getName);
-          
+             message="category can now be edited.";
         }
         else if(user.getRole()==1&&method.equals("addCategory"))
         {
@@ -230,6 +243,7 @@ public class AdminServlet extends HttpServlet {
               }
               categorys=cdb.getAll();
         request.setAttribute("categorys",categorys);
+         message="category has been added/edited.";
         }
         else if(user.getRole()==1&&method.equals("txtList"))
         {
@@ -275,8 +289,11 @@ public class AdminServlet extends HttpServlet {
            pw.close();
            fos.close();
            
+               message="customer.csv succesfully created/edited.";
+             request.setAttribute("adminMsg",message);
             getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-              .forward(request,response);
+                .forward(request,response);
+            request.setAttribute("adminMsg",null);
            return;
               
         }
@@ -292,15 +309,20 @@ public class AdminServlet extends HttpServlet {
          
              List<Item> items=idb.getAll(email);
          request.setAttribute("items",items);
-            getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
-                .forward(request,response);
+             String username=user.getFirstName()+" "+user.getLastName();
+                    request.setAttribute("username",username);
+                        getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                    .forward(request,response);
+                       request.setAttribute("username",null); 
            return;
         }
          } catch (Exception ex) {
              Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
          }
-         getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+          request.setAttribute("adminMsg",message);
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                 .forward(request,response);
+            request.setAttribute("adminMsg",null);
            return;
         
         
