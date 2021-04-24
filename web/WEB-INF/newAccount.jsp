@@ -10,6 +10,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>New Account</title>
+        <link rel="stylesheet" href="../style.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300&family=Noto+Serif:ital@1&family=Roboto+Condensed:ital,wght@1,300&display=swap" rel="stylesheet">
     </head>
     <body>
         <h1>Home Inventory</h1>
@@ -26,6 +29,7 @@
         </form>
         <a href='login'>login</a><br>
         <a href="forgot">forgot password</a>
+        
         <div>${dope}</div>
     </body>
 </html>

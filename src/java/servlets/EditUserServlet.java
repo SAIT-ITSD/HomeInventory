@@ -5,9 +5,11 @@
  */
 package servlets;
 
+import dataaccess.CategoryDB;
 import dataaccess.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.Category;
 import models.User;
 
 /**
@@ -37,8 +40,26 @@ public class EditUserServlet extends HttpServlet {
            return;
         }
         UserDB udb=new UserDB();
-        User user;
+        User user=null;
         try {
+            user = udb.get(email);
+        } catch (Exception ex) {
+            Logger.getLogger(EditUserServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+                List<User> users=udb.getAll();
+        request.setAttribute("users",users);  
+       
+           CategoryDB cdb=new CategoryDB();
+        List<Category> categorys=cdb.getAll();
+        request.setAttribute("categorys",categorys);
+        if(user.getRole()==1)
+        {
+            
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                .forward(request,response);
+           return;
+        }
             user = udb.get(email);
             session.setAttribute("EditFirstName",user.getFirstName());
          session.setAttribute("EditLastName",user.getLastName());

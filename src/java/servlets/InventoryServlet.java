@@ -47,6 +47,18 @@ public class InventoryServlet extends HttpServlet {
                 .forward(request,response);
            return;
         }
+         
+         
+           List<User> users=udb.getAll();
+        request.setAttribute("users",users);  
+        request.setAttribute("categorys",categorys);
+        if(user.getRole()==1)
+        {
+            
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                .forward(request,response);
+           return;
+        }
         else
         {
             String username=user.getFirstName()+" "+user.getLastName();

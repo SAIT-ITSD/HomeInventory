@@ -44,7 +44,6 @@ public class LoginServlet extends HttpServlet {
             UserDB  udb=new UserDB();
             User user=udb.get(email);
             
-            user = udb.get(email);
         
         if(log.equals("out"))
         {

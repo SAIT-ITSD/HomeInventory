@@ -37,13 +37,41 @@ public class welcomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String cheat=request.getParameter("cheat").toString();
+        String cheat=null;
+        try{cheat=request.getParameter("cheat").toString();}
+        catch(Exception e){cheat=null;}
+        
        
         HttpSession session = request.getSession();
+        String email=(String)session.getAttribute("email");
+        UserDB udb=new UserDB();
+        ItemDB idb=new ItemDB();
+        
+             List<Item> items=null; 
+             User user=null;
+        try {
+            items = idb.getAll(email); 
+            request.setAttribute("items",items);
+        user=udb.get(email);
+           List<User> users=udb.getAll();
+        request.setAttribute("users",users);  
+       CategoryDB cdb=new CategoryDB();
+        List<Category> categorys=cdb.getAll();
+        request.setAttribute("categorys",categorys);
+        } catch (Exception ex) {
+            Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(user.getRole()==1)
+        {
+            
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                .forward(request,response);
+           return;
+        }
         if(cheat!=null)
         {
          CheatDB cdb=new CheatDB();
-         UserDB udb=new UserDB();
          Cheat thisCheat;
           
                 
@@ -62,10 +90,10 @@ public class welcomeServlet extends HttpServlet {
                    .forward(request,response);
                     return;
                 }
-                User user=udb.get(cheatEmail);
+                user=udb.get(cheatEmail);
                 //insert rest of code here.
                 session.setAttribute("email",user.getEmail());
-                String email=user.getEmail();
+                email=user.getEmail();
                 CategoryDB ctgdb=new CategoryDB();
                 if(email!=null)
                 {
@@ -100,26 +128,14 @@ public class welcomeServlet extends HttpServlet {
                             if(user!=null&&user.getActive()==1)
                             {
 
-
-                                if(user.getRole()==1)
-                                {
-
-                                    getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
-                                        .forward(request,response);
-                                   return;
-                                }
-                                else
-                                { 
-                                     ItemDB idb=new ItemDB();
-
-                                    List<Item> items=idb.getAll(email);
+                                     
                                     request.setAttribute("items",items);
 
                                     getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
                                         .forward(request,response);
                                     String testing=(String)session.getAttribute("email");
                                    return;
-                                }
+                                
                             }
                         } 
                         catch (Exception ex) 

@@ -11,6 +11,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Inventory</title>
+        <link rel="stylesheet" href="../style.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300&family=Noto+Serif:ital@1&family=Roboto+Condensed:ital,wght@1,300&display=swap" rel="stylesheet">
     </head>
     <body>
         <h1>Home Inventory</h1>
@@ -69,5 +72,6 @@
             <a href="login?log=out">logout</a>
              <a href="login?log=inactive">inactive</a>
              <h3>${invMessage}</h3>
+             <a href="login?log=out">logout</a>
     </body>
 </html>
