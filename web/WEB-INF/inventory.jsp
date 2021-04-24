@@ -26,7 +26,7 @@
             <li><a href="admin">admin</a></li>
              <li><a href="edit">edit</a></li>
         </ul>
-        
+        <h3>${invMessage}</h3>
              <table name="items"><tr>
                     <th>Category</th>
                     <th>Name</th>
@@ -72,7 +72,7 @@
         </form>
             <a href="login?log=out">logout</a>
              <a href="login?log=inactive">inactive</a>
-             <h3>${invMessage}</h3>
+             
              <a href="login?log=out">logout</a>
     </body>
 </html>

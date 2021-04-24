@@ -132,6 +132,15 @@ public class InventoryServlet extends HttpServlet {
                        request.setAttribute("username",null); 
                     return;
                 }
+                if(name==null||name.equals("")||name.equals(" "))
+                {
+                    request.setAttribute("invMessage","item name cannot be blank.");
+                     getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                    .forward(request,response);
+                       request.setAttribute("username",null); 
+                       request.setAttribute("invMessage",null);
+                    return;
+                }
                  Item item=new Item(category,name,price,email);
                 
                  if(id==-1)

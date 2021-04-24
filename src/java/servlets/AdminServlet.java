@@ -114,6 +114,34 @@ public class AdminServlet extends HttpServlet {
             int newRole=Integer.parseInt(request.getParameter("newRole"));
             int active;
             String newActive=request.getParameter("newActive");
+            if(newEmail==null || newPassword==null || newFirstName==null || newLastName==null||newEmail.equals("") || newPassword.equals("") || newFirstName.equals("") || newLastName.equals(""))
+            {
+                request.setAttribute("updatedEmail",null);
+               request.setAttribute("updatedPassword",null);
+               request.setAttribute("updatedFirstName",null);
+               request.setAttribute("updatedLastName",null);
+               users=udb.getAll();request.setAttribute("users",users);
+               message="cannot not leave any spces blank.";
+               request.setAttribute("adminMsg",message);
+              getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                  .forward(request,response);request.setAttribute("username",null);
+              request.setAttribute("adminMsg",null);
+             return;
+            }
+              if(newEmail.equals(" ") || newPassword.equals(" ") || newFirstName.equals(" ") || newLastName.equals(" "))
+            {
+                request.setAttribute("updatedEmail",null);
+               request.setAttribute("updatedPassword",null);
+               request.setAttribute("updatedFirstName",null);
+               request.setAttribute("updatedLastName",null);
+               users=udb.getAll();request.setAttribute("users",users);
+               message="cannot not leave any spces blank.";
+               request.setAttribute("adminMsg",message);
+              getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                  .forward(request,response);request.setAttribute("username",null);
+              request.setAttribute("adminMsg",null);
+             return;
+            }
             if(newActive.equals("on"))
             {
                 active=1;

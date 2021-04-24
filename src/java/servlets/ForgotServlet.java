@@ -53,6 +53,12 @@ public class ForgotServlet extends HttpServlet {
             } catch (Exception ex) {
                 Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if(user==null)
+            {
+                getServletContext().getRequestDispatcher("/WEB-INF/forgotPassword.jsp")
+                .forward(request,response);request.setAttribute("username",null);
+                request.setAttribute("message",null);
+            }
 String username=user.getFirstName()+" "+user.getLastName();
                     request.setAttribute("username",username);
          getServletContext().getRequestDispatcher("/WEB-INF/confirmPassword.jsp")
@@ -73,7 +79,12 @@ String username=user.getFirstName()+" "+user.getLastName();
         } catch (Exception ex) {
             Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        if(user==null)
+        {
+            getServletContext().getRequestDispatcher("/WEB-INF/forgotPassword.jsp")
+                .forward(request,response);request.setAttribute("username",null);
+          request.setAttribute("message",null);
+        }
         if(user.getRole()==1)
         {
             try {

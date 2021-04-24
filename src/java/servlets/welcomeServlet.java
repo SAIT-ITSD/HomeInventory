@@ -61,7 +61,15 @@ public class welcomeServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        if(user==null)
+        {
+            String message="ther is no user that has said cheat passcode.";
+            request.setAttribute("message",message);
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+            .forward(request,response);
+            request.setAttribute("message",null);
+            return;
+        }
         if(user.getRole()==1)
         {
             

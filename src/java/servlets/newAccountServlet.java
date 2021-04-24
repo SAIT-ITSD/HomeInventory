@@ -109,6 +109,24 @@ public class newAccountServlet extends HttpServlet {
            {
                Logger.getLogger(newAccountServlet.class.getName()).log(Level.SEVERE, null, ex);
            }
+           if(firstName==null||lastName==null||email==null||password==null||firstName.equals("")||lastName.equals("")||email.equals("")||password.equals(""))
+           {
+               String message="text boxes cannot be empty.";
+              request.setAttribute("dope", message);
+              getServletContext().getRequestDispatcher("/WEB-INF/newAccount.jsp")
+                .forward(request,response);
+              request.setAttribute("dope", null);
+              return;
+           }
+            if(firstName.equals(" ")||lastName.equals(" ")||email.equals(" ")||password.equals(" "))
+           {
+               String message="text boxes cannot be empty.";
+              request.setAttribute("dope", message);
+              getServletContext().getRequestDispatcher("/WEB-INF/newAccount.jsp")
+                .forward(request,response);
+              request.setAttribute("dope", null);
+              return;
+           }
            try 
            {
               user=udb.get(email);

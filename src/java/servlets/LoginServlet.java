@@ -36,11 +36,13 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String welcomeEmail=(String)request.getAttribute("release");
-        String inactiveMessage="account succesfully inactivated.";User user=null;
+        String inactiveMessage="account succesfully inactivated.";
+        User user=null;
+       HttpSession session = request.getSession();
+            String email=(String)session.getAttribute("email");
        try { 
            String log=(String)request.getParameter("log");
-            HttpSession session = request.getSession();
-            String email=(String)session.getAttribute("email");
+            
             UserDB  udb=new UserDB();
             user=udb.get(email);
             
@@ -65,10 +67,43 @@ public class LoginServlet extends HttpServlet {
         }
        if(user!=null)
        {
-           String username=user.getFirstName()+" "+user.getLastName();
-                    request.setAttribute("username",username);
+            String username=user.getFirstName()+" "+user.getLastName();
+            request.setAttribute("username",username);
+            request.setAttribute("username",username);
+            CategoryDB cdb=new CategoryDB();
+            List<Category> categorys=null;
+                try {
+                    categorys = cdb.getAll();
+                } catch (Exception ex) {
+                    Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        request.setAttribute("categorys",categorys);
+        if(user.getRole()==1)
+        {
+            
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
+                .forward(request,response);request.setAttribute("username",null);
+           return;
+        }
+            
+            else
+            {
+                ItemDB idb=new ItemDB();
+             List<Item> items=null;
+                try {
+                    items = idb.getAll(email);
+                } catch (Exception ex) {
+                    Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         request.setAttribute("items",items);
+                        getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp")
+                    .forward(request,response);
+                       request.setAttribute("username",null); 
+           return;
+            }
        }
      
+       
         getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response); request.setAttribute("username",null);
         request.setAttribute("message",null);
