@@ -115,7 +115,6 @@ String username=user.getFirstName()+" "+user.getLastName();
         boolean passed=false;HttpSession session = request.getSession();
         String email=(String)session.getAttribute("email");
         String confirmation=request.getParameter("confirmation");
-        String password=request.getParameter("gmailPassword");
         String path = getServletContext().getRealPath("/WEB-INF");
         String newPassword=request.getParameter("newPassword");
         UserDB udb=new UserDB();
@@ -137,8 +136,8 @@ String username=user.getFirstName()+" "+user.getLastName();
             AccountService as=new AccountService();
             String url = request.getRequestURL().toString();
              url+="?dude="+"dude";
-            as.forgot(email, password, path,url);
-            request.setAttribute("passwordMessage","if you're email and password were entered correctly email has been sent with your passcode."); 
+            String message=as.forgot(email,path,url);
+            request.setAttribute("passwordMessage",message); 
             
             getServletContext().getRequestDispatcher("/WEB-INF/forgotPassword.jsp")
                 .forward(request,response);request.setAttribute("username",null);

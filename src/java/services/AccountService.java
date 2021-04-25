@@ -11,12 +11,17 @@ import models.User;
 
 public class AccountService {
     
-    public void forgot(String email, String password, String path,String toUrl) {
+    public String forgot(String email, String path,String toUrl) {
         UserDB userDB = new UserDB();
-        
+        String message="email sent succesfully.";
         try {
             User user = userDB.get(email);
-            
+              if(user==null)
+               {
+                   
+                    message="there is no user with said email.";
+                    return message;
+               }
                 Logger.getLogger(AccountService.class.getName()).log(Level.INFO, "Successful reminder email sent to {0}", email);
                 
                 String to = user.getEmail();
@@ -35,11 +40,13 @@ public class AccountService {
                 tags.put("link", toUrl);
                 GmailService.sendMail(to, subject, template, tags);
                ForgotDB fdb=new ForgotDB();
+             
                fdb.insert(passcode,email);
             
         } catch (Exception e) {
+            e=e;
         }
-    
+        return message;
     }
      public void welcome(String email, String password, String path,String toPath) {
         UserDB userDB = new UserDB();
