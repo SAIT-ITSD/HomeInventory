@@ -135,7 +135,7 @@ public class AdminServlet extends HttpServlet {
                request.setAttribute("updatedFirstName",null);
                request.setAttribute("updatedLastName",null);
                users=udb.getAll();request.setAttribute("users",users);
-               message="cannot not leave any spces blank.";
+               message="cannot not leave any spaces blank.";
                request.setAttribute("adminMsg",message);
               getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp")
                   .forward(request,response);request.setAttribute("username",null);
@@ -254,6 +254,7 @@ public class AdminServlet extends HttpServlet {
               String getName=request.getParameter("newCategoryName");
               int tisID=-1;
               int highest=categorys.size()+1;
+             
               for(int i=0;i<categorys.size();i++)
               {
                   if(categorys.get(i).getCategoryId()==getId)
@@ -261,19 +262,31 @@ public class AdminServlet extends HttpServlet {
                       tisID=i;
                      
                   } 
-              }
-              if(tisID!=-1)
+              } 
+              if(getName==null||getName.equals("")||getName.equals(" "))
               {
-                  cdb.update(tisID+1, getName);
+                  request.setAttribute("categorys",categorys);
+                    message="cannot leave category name blank.";
               }
               else
               {
-                  cdb.insert((highest), getName);
-                  
+                if(tisID!=-1)
+                {
+                    cdb.update(tisID+1, getName); message="category has been updated.";
+                }
+                else
+                {
+                    cdb.insert((highest), getName); message="category has been added";
+
+                }
+               
               }
+              
               categorys=cdb.getAll();
         request.setAttribute("categorys",categorys);
-         message="category has been added/edited.";
+         
+         
+         
         }
         else if(user.getRole()==1&&method.equals("txtList"))
         {

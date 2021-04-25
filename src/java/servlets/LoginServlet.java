@@ -40,7 +40,8 @@ public class LoginServlet extends HttpServlet {
         User user=null;
        HttpSession session = request.getSession();
             String email=(String)session.getAttribute("email");
-       try { 
+       try 
+       { 
            String log=(String)request.getParameter("log");
             
             UserDB  udb=new UserDB();
@@ -57,8 +58,7 @@ public class LoginServlet extends HttpServlet {
                 udb.update(user);
              session.invalidate();
              request.setAttribute("message",inactiveMessage);
-        }String username=user.getFirstName()+" "+user.getLastName();
-                    request.setAttribute("username",username);
+        }
            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                 .forward(request,response);request.setAttribute("username",null);
            return;
@@ -68,7 +68,6 @@ public class LoginServlet extends HttpServlet {
        if(user!=null)
        {
             String username=user.getFirstName()+" "+user.getLastName();
-            request.setAttribute("username",username);
             request.setAttribute("username",username);
             CategoryDB cdb=new CategoryDB();
             List<Category> categorys=null;
