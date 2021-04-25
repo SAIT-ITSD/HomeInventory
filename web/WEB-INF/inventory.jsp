@@ -73,6 +73,5 @@
             <a href="login?log=out">logout</a>
              <a href="login?log=inactive">inactive</a>
              
-             <a href="login?log=out">logout</a>
     </body>
 </html>

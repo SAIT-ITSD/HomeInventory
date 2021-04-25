@@ -279,7 +279,8 @@ public class AdminServlet extends HttpServlet {
                     cdb.insert((highest), getName); message="category has been added";
 
                 }
-               
+               session.setAttribute("newCategoryId",null);
+             session.setAttribute("newCategoryName",null);
               }
               
               categorys=cdb.getAll();

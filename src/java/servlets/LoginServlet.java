@@ -50,6 +50,7 @@ public class LoginServlet extends HttpServlet {
         
         if(log.equals("out"))
         {
+            inactiveMessage="you have succesfully logged out";
              session.invalidate();
         }
         if(log.equals("inactive")&&user.getRole()!=1)
